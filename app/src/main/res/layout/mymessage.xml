@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar4"
+        android:layout_width="391dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignBottom="@+id/toolbar4"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="11dp"
+        android:layout_marginStart="12dp"
+        android:background="@drawable/back" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/button4"
+        android:textColor="@color/list_bg_color"
+        android:textSize="25dp"
+        android:layout_marginStart="88dp"
+        android:layout_toEndOf="@+id/button4"
+        android:text="我的钓点" />
+
+    <Button
+        android:id="@+id/notice"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignStart="@+id/button4"
+        android:layout_below="@+id/toolbar4"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/notice" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_alignBottom="@+id/notice"
+        android:layout_marginStart="14dp"
+        android:layout_toEndOf="@+id/notice"
+        android:text="系统消息" />
+
+    <Button
+        android:id="@+id/notice_more"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignBottom="@+id/textView12"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="27dp"
+        android:background="@drawable/more" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#9f9f9f"
+        android:layout_below="@+id/textView12"
+        android:id="@+id/view3" />
+
+    <Button
+        android:id="@+id/meme"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignStart="@+id/notice"
+        android:layout_below="@+id/view3"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/meme" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/meme"
+        android:layout_alignStart="@+id/textView12"
+        android:textSize="20dp"
+        android:text="我发起的" />
+
+    <Button
+        android:id="@+id/meme_more"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignBottom="@+id/textView13"
+        android:layout_alignEnd="@+id/notice_more"
+        android:background="@drawable/more" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#9f9f9f"
+        android:layout_below="@+id/textView13"
+        android:id="@+id/view4" />
+
+</RelativeLayout>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="442dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="11dp"
+        android:layout_toEndOf="@+id/set_back"
+        android:text="渔乐生活"
+        android:textColor="@color/list_bg_color"
+        android:textSize="25dp"
+        tools:layout_editor_absoluteX="53dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <Button
+        android:id="@+id/set_back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/save"
+        android:layout_marginStart="15dp"
+        android:background="@drawable/back"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <TextView
+        android:id="@+id/save"
+        android:layout_width="46dp"
+        android:layout_height="30dp"
+        android:layout_alignBaseline="@+id/textView8"
+        android:layout_alignBottom="@+id/textView8"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="15dp"
+        android:text="保存"
+        android:textColor="@color/list_focus_color"
+        android:textSize="20dp"
+        tools:layout_editor_absoluteX="322dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/set_back"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="36dp"
+        android:textSize="20dp"
+        android:text="手机号码：" />
+
+    <EditText
+        android:id="@+id/editPhoneNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView2"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_toEndOf="@+id/textView2"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/editPhoneNumber"
+        android:background="#9f9f9f"
+        android:id="@+id/view" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView2"
+        android:layout_below="@+id/view"
+        android:layout_marginTop="16dp"
+        android:text="邮箱地址："
+        android:textSize="20dp" />
+
+    <EditText
+        android:id="@+id/editEmailaddr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/editPhoneNumber"
+        android:layout_below="@+id/view"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/editEmailaddr"
+        android:layout_marginTop="11dp"
+        android:background="#9f9f9f" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView6"
+        android:layout_below="@+id/view1"
+        android:layout_marginTop="15dp"
+        android:textSize="20dp"
+        android:text="备注：" />
+
+    <EditText
+        android:id="@+id/editOtherName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/editEmailaddr"
+        android:layout_alignStart="@+id/textView8"
+        android:layout_below="@+id/view1"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/editOtherName"
+        android:background="#9f9f9f" />
+
+
+</RelativeLayout>

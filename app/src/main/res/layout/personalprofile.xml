@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar2"
+        android:id="@+id/relativeLayout">
+
+    <TextView
+        android:id="@+id/headpic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="45dp"
+        android:text="头像" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/headpic"
+        android:layout_below="@+id/headpic"
+        android:layout_marginTop="43dp"
+        android:text="昵称" />
+
+    <TextView
+        android:id="@+id/sex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/name"
+        android:layout_below="@+id/name"
+        android:layout_marginTop="38dp"
+        android:text="性别" />
+
+    <TextView
+        android:id="@+id/profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/sex"
+        android:layout_below="@+id/sex"
+        android:layout_marginTop="39dp"
+        android:text="简介" />
+
+    <TextView
+        android:id="@+id/contactinfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/profile"
+        android:layout_below="@+id/profile"
+        android:layout_marginTop="46dp"
+        android:text="联系方式" />
+
+        <Button
+            android:id="@+id/pic_more"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/headpic"
+            android:layout_marginEnd="33dp"
+            android:background="@drawable/more" />
+
+    <Button
+        android:id="@+id/name_more"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignStart="@+id/pic_more"
+        android:layout_alignTop="@+id/name"
+        android:background="@drawable/more" />
+
+    <Button
+        android:id="@+id/sex_more"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignStart="@+id/name_more"
+        android:layout_alignTop="@+id/sex"
+        android:background="@drawable/more" />
+
+    <Button
+        android:id="@+id/profile_more"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignStart="@+id/sex_more"
+        android:layout_alignTop="@+id/profile"
+        android:background="@drawable/more" />
+
+    <Button
+        android:id="@+id/contactinfo_more"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignStart="@+id/profile_more"
+        android:layout_alignTop="@+id/contactinfo"
+        android:background="@drawable/more" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignTop="@+id/pic_more"
+            android:layout_marginEnd="19dp"
+            android:layout_toStartOf="@+id/pic_more"
+            android:scaleType="centerCrop"
+            android:src="@drawable/pic" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/sex"
+            android:layout_alignEnd="@+id/iv_icon"
+            android:text="昵称" />
+
+    <TextView
+        android:id="@+id/tv_sex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/tv_name"
+        android:layout_alignTop="@+id/sex_more"
+        android:text="性别" />
+    </RelativeLayout>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
+    <Button
+        android:id="@+id/set_back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_above="@+id/relativeLayout"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="11dp"
+        android:layout_marginStart="15dp"
+        android:background="@drawable/back" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/set_back"
+        android:layout_marginStart="11dp"
+        android:textSize="25dp"
+        android:textColor="@color/list_bg_color"
+        android:layout_toEndOf="@+id/set_back"
+        android:text="渔乐生活" />
+
+</RelativeLayout>

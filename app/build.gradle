@@ -1,0 +1,62 @@
+apply plugin: 'com.android.application'
+
+
+android {
+    useLibrary 'org.apache.http.legacy'
+    signingConfigs {
+        config {
+            keyAlias 'cbc'
+            keyPassword 'cbc951018'
+            storeFile file('C:/Users/chenbaichang/cbc/cbc.jks')
+            storePassword 'cbc951018'
+        }
+    }
+    compileSdkVersion 26
+    defaultConfig {
+        applicationId "com.zucc.cbc31401324.ylsh"
+        minSdkVersion 21
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.config
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDir 'libs'
+            //说明so的路径为该libs路径，关联所有地图SDK的so文件
+        }
+    }
+    productFlavors {
+    }
+}
+
+repositories{
+    flatDir{
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'com.android.support:support-v4:26.1.0'
+    compile 'com.android.support:design:26.1.0'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation files('libs/BaiduLBS_Android.jar')
+    compile 'com.google.code.gson:gson:2.6.2'
+
+
+}
+

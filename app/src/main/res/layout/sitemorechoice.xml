@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <Button
+        android:id="@+id/backsite"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="100dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="250dp"
+        android:visibility="gone"
+        android:background="@drawable/backsite" />
+
+    <Button
+        android:id="@+id/addsite"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="100dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="300dp"
+        android:visibility="gone"
+        android:background="@drawable/addsite" />
+
+    <Button
+        android:id="@+id/overlay"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="100dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="340dp"
+        android:background="@drawable/overlay" />
+
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginStart="250dp"
+        android:layout_marginTop="20dp"
+        android:text="确定" />
+
+    <Button
+        android:id="@+id/search"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="100dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="220dp"
+        android:visibility="gone"
+        android:background="@drawable/search" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.baidu.mapapi.map.TextureMapView
+            android:id="@+id/mTexturemap"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </com.baidu.mapapi.map.TextureMapView>
+
+        <RelativeLayout
+            android:id="@+id/marker_ly"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:visibility="gone"
+            android:background="#ffffff"
+            android:layout_alignParentBottom="true">
+
+
+            <ImageView
+                android:id="@+id/mark_img"
+                android:layout_width="120dp"
+                android:layout_height="150dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/pic" />
+
+            <TextView
+                android:id="@+id/mark_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/mark_img"
+                android:layout_marginStart="19dp"
+                android:layout_toEndOf="@+id/mark_img"
+                android:text="浙江大学城市学院"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/mark_name"
+                android:layout_centerVertical="true"
+                android:text="类型："
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/mark_sitetype"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/textView15"
+                android:layout_toEndOf="@+id/textView15"
+                android:text="河流"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/mark_img"
+                android:layout_alignStart="@+id/textView15"
+                android:text="具体地址："
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/mark_countpeople"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/textView17"
+                android:layout_toEndOf="@+id/textView17"
+                android:text="0"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/mark_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:text="100m"
+                android:textSize="15dp" />
+        </RelativeLayout>
+    </RelativeLayout>
+</FrameLayout>
+
+
+
+

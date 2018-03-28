@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="442dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="357dp"
+        android:layout_height="39dp"
+        android:layout_below="@+id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="93dp"
+        android:text="请填写您的性别"
+        tools:layout_editor_absoluteX="14dp"
+        tools:layout_editor_absoluteY="160dp" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="11dp"
+        android:layout_toEndOf="@+id/set_back"
+        android:text="渔乐生活"
+        android:textColor="@color/list_bg_color"
+        android:textSize="25dp"
+        tools:layout_editor_absoluteX="53dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <Button
+        android:id="@+id/set_back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignStart="@+id/textView3"
+        android:layout_alignTop="@+id/textView8"
+        android:background="@drawable/back"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <TextView
+        android:id="@+id/save"
+        android:layout_width="46dp"
+        android:layout_height="30dp"
+        android:layout_alignEnd="@+id/editsex"
+        android:layout_alignTop="@+id/textView8"
+        android:text="保存"
+        android:textColor="@color/list_focus_color"
+        android:textSize="20dp"
+        tools:layout_editor_absoluteX="322dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <EditText
+        android:id="@+id/editsex"
+        android:layout_width="361dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView3"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="27dp"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="textPersonName"
+        tools:layout_editor_absoluteX="12dp"
+        tools:layout_editor_absoluteY="82dp" />
+
+</RelativeLayout>

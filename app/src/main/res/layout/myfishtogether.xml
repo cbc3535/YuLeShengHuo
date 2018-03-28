@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/pic" />
+
+        <TextView
+            android:id="@+id/myfishtogether_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/iv_icon"
+            android:layout_marginStart="14dp"
+            android:layout_toEndOf="@+id/iv_icon"
+            android:text="cya" />
+
+        <TextView
+            android:id="@+id/myfishtogether_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/iv_icon"
+            android:layout_alignStart="@+id/myfishtogether_name"
+            android:text="1分钟前" />
+
+        <TextView
+            android:id="@+id/myfishtogether_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/myfishtogether_name"
+            android:layout_marginEnd="31dp"
+            android:text="距我100m" />
+
+        <TextView
+            android:id="@+id/myfishtogether_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/iv_icon"
+            android:layout_below="@+id/myfishtogether_time"
+            android:layout_marginTop="14dp"
+            android:text="一起钓鱼有没有？" />
+
+        <Button
+            android:id="@+id/calendar"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignStart="@+id/myfishtogether_info"
+            android:layout_below="@+id/myfishtogether_info"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/calendar" />
+
+        <TextView
+            android:id="@+id/myfishtogether_calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/calendar"
+            android:layout_alignBottom="@+id/calendar"
+            android:layout_toEndOf="@+id/iv_icon"
+            android:text="2017-11-4 星期六"
+            android:textSize="15dp" />
+
+        <Button
+            android:id="@+id/myfishtogether_map"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignStart="@+id/calendar"
+            android:layout_below="@+id/calendar"
+            android:layout_marginTop="11dp"
+            android:background="@drawable/mapmap" />
+
+        <TextView
+            android:id="@+id/myfishtogether_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/myfishtogether_map"
+            android:layout_alignBottom="@+id/myfishtogether_map"
+            android:layout_alignStart="@+id/myfishtogether_calendar"
+            android:text="浙江大学城市学院内河"
+            android:textSize="15dp" />
+
+        <Button
+            android:id="@+id/map_more"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignEnd="@+id/myfishtogether_distance"
+            android:layout_alignTop="@+id/myfishtogether_address"
+            android:background="@drawable/more" />
+
+        <View
+            android:id="@+id/view4"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/map_more"
+            android:layout_marginTop="11dp"
+            android:background="#9f9f9f" />
+    </RelativeLayout>
+</RelativeLayout>
