@@ -1,12 +1,14 @@
 package com.zucc.cbc31401324.ylsh;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.zucc.cbc31401324.ylsh.Activity.AddYuLunActivity;
 import com.zucc.cbc31401324.ylsh.Adapter.MarkerClickListViewAdapter;
 import com.zucc.cbc31401324.ylsh.Bin.MarkerClick_info;
 
@@ -25,6 +27,8 @@ public class MarkerClickActivity_Fragment1 extends Activity implements  android.
         setContentView(R.layout.markerclick_listview);
         Button btn = (Button)findViewById(R.id.back);
         btn.setOnClickListener(this);
+        Button btn1 = (Button)findViewById(R.id.add_yulun);
+        btn1.setOnClickListener(this);
         init();
         MarkerClickListViewAdapter adapter = new MarkerClickListViewAdapter(MarkerClickActivity_Fragment1.this,R.layout.markerclick_base,markerclick);
         ListView listView = (ListView)findViewById(R.id.list_view1);
@@ -69,6 +73,10 @@ public class MarkerClickActivity_Fragment1 extends Activity implements  android.
         switch (view.getId()) {
             case R.id.back:
                 finish();
+                break;
+            case R.id.add_yulun:
+                Intent intent = new Intent(MarkerClickActivity_Fragment1.this, AddYuLunActivity.class);
+                MarkerClickActivity_Fragment1.this.startActivity(intent);
                 break;
             default:break;
         }

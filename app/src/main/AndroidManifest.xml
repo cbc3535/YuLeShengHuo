@@ -2,28 +2,25 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.zucc.cbc31401324.ylsh">
 
-
-
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-
 
     <application
         android:name="com.mob.MobApplication"
@@ -40,31 +37,32 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.MainActivity"/>
-        <activity android:name=".Activity.RegisterActivity"/>
-        <activity android:name=".Activity.PersonalprofileActivity"/>
-        <activity android:name=".Activity.ExitActivity"/>
-        <activity android:name=".Activity.EditNameActivity"/>
-        <activity android:name=".Activity.EditContactInfoActivity"/>
-        <activity android:name=".Activity.EditProfileActivity"/>
-        <activity android:name=".Activity.EditSexActivity"/>
-        <activity android:name=".Activity.MyFishSiteActivity"/>
-        <activity android:name=".Activity.MyMessageActivity"/>
-        <activity android:name=".Activity.MyFishTogetherActivity"/>
-        <activity android:name=".Activity.ChangeHeadPicActivity"/>
-        <activity android:name=".Activity.UpDataActivity"/>
-        <activity android:name=".UpDataLocationActivity"/>
-        <activity android:name=".Activity.SearchActivity"/>
-        <activity android:name=".Activity.MarkerClickActivity"/>
-        <activity android:name=".Activity.DateActivity"/>
-        <activity android:name=".SiteMoreChoiceActivity"/>
-        <activity android:name=".MarkerClickActivity_Fragment1"/>
-        <activity android:name=".MarkerClickActivity_Fragment2"/>
+        <activity android:name=".Activity.MainActivity" />
+        <activity android:name=".Activity.RegisterActivity" />
+        <activity android:name=".Activity.PersonalprofileActivity" />
+        <activity android:name=".Activity.ExitActivity" />
+        <activity android:name=".Activity.EditNameActivity" />
+        <activity android:name=".Activity.EditContactInfoActivity" />
+        <activity android:name=".Activity.EditProfileActivity" />
+        <activity android:name=".Activity.EditSexActivity" />
+        <activity android:name=".Activity.MyFishSiteActivity" />
+        <activity android:name=".Activity.MyMessageActivity" />
+        <activity android:name=".Activity.MyFishTogetherActivity" />
+        <activity android:name=".Activity.ChangeHeadPicActivity" />
+        <activity android:name=".Activity.UpDataActivity" />
+        <activity android:name=".UpDataLocationActivity" />
+        <activity android:name=".Activity.SearchActivity" />
+        <activity android:name=".Activity.MarkerClickActivity" />
+        <activity android:name=".Activity.DateActivity" />
+        <activity android:name=".SiteMoreChoiceActivity" />
+        <activity android:name=".MarkerClickActivity_Fragment1" />
+        <activity android:name=".MarkerClickActivity_Fragment2" />
         <activity
             android:name="com.mob.tools.MobUIShell"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.zucc.cbc31401324.ylsh.provider"
@@ -72,18 +70,25 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
+
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="wzeWUNv3Au0qnKljhmrItGLpzUuM57RD"/>
-        <meta-data android:name="Mob-AppKey" android:value="24d1aad3c8794"/>
+            android:value="wzeWUNv3Au0qnKljhmrItGLpzUuM57RD" />
+        <meta-data
+            android:name="Mob-AppKey"
+            android:value="24d1aad3c8794" />
+        <meta-data
+            android:name="Mob-AppSecret"
+            android:value="480f424ec4f43e08c67ad309dde3c388" />
 
-        <meta-data android:name="Mob-AppSecret" android:value="480f424ec4f43e08c67ad309dde3c388"/>
-        <service android:name="com.baidu.location.f"
+        <service
+            android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote"/>
+            android:process=":remote" />
 
+        <activity android:name=".Activity.AddYuLunActivity"></activity>
     </application>
 
 </manifest>

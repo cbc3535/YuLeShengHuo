@@ -59,6 +59,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                 case LOGIN_RESULT:
                     if(gsonerror == null){
                         parseJASONWithGASON((String) msg.obj);
+                        //跳转登录页面
                     }else {
                         Log.d("EditSexActivity", "handleMessage: ");
                     }

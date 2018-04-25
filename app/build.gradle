@@ -37,8 +37,8 @@ android {
     }
 }
 
-repositories{
-    flatDir{
+repositories {
+    flatDir {
         dirs 'libs'
     }
 }
@@ -59,4 +59,5 @@ dependencies {
 
 
 }
+
 

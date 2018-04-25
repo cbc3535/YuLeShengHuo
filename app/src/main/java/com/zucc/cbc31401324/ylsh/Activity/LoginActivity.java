@@ -53,7 +53,9 @@ public class LoginActivity extends Activity implements
                 case LOGIN_RESULT:
                     parseJASONWithGASON((String) msg.obj);
                     LoginResult result = new LoginResult();
-                    if (result.getError() != null) {
+                    if (msg.obj != null) {
+                        //TODO 存放到LoginResult
+                        
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         LoginActivity.this.startActivity(intent);
                     }
@@ -85,75 +87,71 @@ public class LoginActivity extends Activity implements
                 final String pass = et_password.getText().toString();
                 //TODO 判断用户手机号和密码是否匹配
                 // TODO 2.4.3 登录
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //封装
-                        JSONObject job = new JSONObject();
-                        /**
-                         * ...
-                         */
-                        BasicNameValuePair c = new BasicNameValuePair("json", job.toString());
-                        List<BasicNameValuePair> parameters = new ArrayList<BasicNameValuePair>();
-                        parameters.add(c);
-                        //http请求
-                        JSONObject jsonObject = HttpUtil.postMethod(parameters, "year_loadall.action");
-//                        if (error == null||error.equl(""))
-//                            //正常流程
-//                            System.out.println(jsonObject.toString());
-//                        else
-//                            //非法流程
-//                            System.out.println(error);
-                    }
-                }).start();
 //                new Thread(new Runnable() {
 //                    @Override
 //                    public void run() {
-//                        String path = "";
-//                        //1.创建客户端对象
-//                        HttpClient hc = new DefaultHttpClient();
-//                        //2.创建post请求对象
-//                        HttpPost hp = new HttpPost(path);
-//                        //封装form表单提交的数据
-//                        BasicNameValuePair bnvp = new BasicNameValuePair("name", phone);
-//                        BasicNameValuePair bnvp2 = new BasicNameValuePair("pass", pass);
+//                        //封装
+//                        JSONObject job = new JSONObject();
+//                        /**
+//                         * ...
+//                         */
+//                        BasicNameValuePair c = new BasicNameValuePair("userPhone", phone);
+//                        BasicNameValuePair c1 = new BasicNameValuePair("userPwd", pass);
 //                        List<BasicNameValuePair> parameters = new ArrayList<BasicNameValuePair>();
-//                      //1.GSON.toJSONResult
-//                        //2.HTTP -> GSON
-//                            //3.->JSON,JSONUtil->RESULT
-//                                //4.show();
-//
-//                        //把BasicNameValuePair放入集合中
-//                        parameters.add(bnvp);
-//                        parameters.add(bnvp2);
-//                        try {
-//                            //要提交的数据都已经在集合中了，把集合传给实体对象
-//                            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(parameters, "utf-8");
-//                            //设置post请求对象的实体，其实就是把要提交的数据封装至post请求的输出流中
-//                            hp.setEntity(entity);
-//                            //3.使用客户端发送post请求
-//                            HttpResponse hr = hc.execute(hp);
-//                            if (hr.getStatusLine().getStatusCode() == 200) {
-//                                InputStream is = hr.getEntity().getContent();
-//                                String text = Utils.getTextFromStream(is);
-//
-//
-//                                //TODO 存放到LoginResult
-////                                LoginResult loginresult = new LoginResult();
-//                                Message message = new Message();
-//                                message.what = LOGIN_RESULT;
-//                                message.obj = text;
-//                                handler.sendMessage(message);
-//                                //发送消息，让主线程刷新ui显示text
-////                                Message msg = handler.obtainMessage();
-////                                msg.obj = text;
-////                                handler.sendMessage(msg);
-//                            }
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
+//                        parameters.add(c);
+//                        parameters.add(c1);
+//                        //http请求
+//                        JSONObject jsonObjectResult = HttpUtil.postMethod(parameters, "year_loadall.action");
+//                        LoginResult loginresult = new LoginResult();
+////                        if (error == null||error.equl(""))
+////                            //正常流程
+////                            System.out.println(jsonObject.toString());
+////                        else
+////                            //非法流程
+////                            System.out.println(error);
 //                    }
-//                }).run();
+//                }).start();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String path = "";
+                        //1.创建客户端对象
+                        HttpClient hc = new DefaultHttpClient();
+                        //2.创建post请求对象
+                        HttpPost hp = new HttpPost(path);
+                        //封装form表单提交的数据
+                        BasicNameValuePair bnvp = new BasicNameValuePair("name", phone);
+                        BasicNameValuePair bnvp2 = new BasicNameValuePair("pass", pass);
+                        List<BasicNameValuePair> parameters = new ArrayList<BasicNameValuePair>();
+                      //1.GSON.toJSONResult
+                        //2.HTTP -> GSON
+                            //3.->JSON,JSONUtil->RESULT
+                                //4.show();
+
+                        //把BasicNameValuePair放入集合中
+                        parameters.add(bnvp);
+                        parameters.add(bnvp2);
+                        try {
+                            //要提交的数据都已经在集合中了，把集合传给实体对象
+                            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(parameters, "utf-8");
+                            //设置post请求对象的实体，其实就是把要提交的数据封装至post请求的输出流中
+                            hp.setEntity(entity);
+                            //3.使用客户端发送post请求
+                            HttpResponse hr = hc.execute(hp);
+                            if (hr.getStatusLine().getStatusCode() == 200) {
+                                InputStream is = hr.getEntity().getContent();
+                                String text = Utils.getTextFromStream(is);
+                                Message message = new Message();
+                                message.what = LOGIN_RESULT;
+                                message.obj = text;
+                                handler.sendMessage(message);
+                                //发送消息，让主线程刷新ui显示text
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
                 break;
             case R.id.register:
                 Intent intent2 = new Intent(LoginActivity.this, RegisterActivity.class);
@@ -167,7 +165,6 @@ public class LoginActivity extends Activity implements
         Gson gson = new Gson();
         List<LoginResult> gsonloginresult = gson.fromJson(text,new TypeToken<List<LoginResult>>(){}.getType());
         this.gsonloginresult.addAll(gsonloginresult);
-//        gsonerror = gson.fromJson(text,GSONError.class);
     }
 
     @SuppressLint("ShowToast")
