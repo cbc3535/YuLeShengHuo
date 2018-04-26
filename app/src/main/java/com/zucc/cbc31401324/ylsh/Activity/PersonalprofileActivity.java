@@ -95,9 +95,7 @@ public class PersonalprofileActivity extends Activity implements
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.pic_more:
-//                Toast.makeText(PersonalprofileActivity.this, "头像选择!", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(PersonalprofileActivity.this, ChangeHeadPicActivity.class);
-//                PersonalprofileActivity.this.startActivity(intent);
                 PersonalprofileActivity.this.startActivityForResult(intent,0);
                 break;
             case R.id.name_more:

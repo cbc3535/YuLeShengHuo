@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.zucc.cbc31401324.ylsh.Bin.GSONError;
@@ -68,7 +67,7 @@ public class DateActivity extends Activity implements
         okcalendar = (TextView)findViewById(R.id.ok_calendar);
         Button btn = (Button)findViewById(R.id.back);
         btn.setOnClickListener(this);
-        TextView tv = (TextView) findViewById(R.id.ok);
+        TextView tv = (TextView) findViewById(R.id.putyulun);
         tv.setOnClickListener(this);
         Button btn1 = (Button)findViewById(R.id.calendar_more);
         btn1.setOnClickListener(this);
@@ -89,7 +88,7 @@ public class DateActivity extends Activity implements
                 Intent intent2 = new Intent(DateActivity.this, SiteMoreChoiceActivity.class);
                 DateActivity.this.startActivityForResult(intent2,0);
                 break;
-            case R.id.ok:
+            case R.id.putyulun:
                 //TODO 向后台传约钓信息 同时 回到上一级页面
                 //TODO fpId 需要修改为具体位置 String
                 LoginResult loginResult = new LoginResult();
