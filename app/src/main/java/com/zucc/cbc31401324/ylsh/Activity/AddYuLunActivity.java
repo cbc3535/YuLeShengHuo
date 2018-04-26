@@ -6,17 +6,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zucc.cbc31401324.ylsh.R;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AddYuLunActivity extends AppCompatActivity implements View.OnClickListener{
-    private Button button;
     private CircleImageView circleImageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +27,12 @@ public class AddYuLunActivity extends AppCompatActivity implements View.OnClickL
         circleImageView = findViewById(R.id.iv_icon);
         circleImageView.setOnClickListener(this);
         TextView tv = findViewById(R.id.putyulun);
+        TextView tv1 = findViewById(R.id.yulun_time);
+        EditText editText = findViewById(R.id.yulun_text);
         tv.setOnClickListener(this);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+        Date date = new Date(System.currentTimeMillis());
+        tv1.setText(simpleDateFormat.format(date));
     }
 
     @Override

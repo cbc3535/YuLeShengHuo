@@ -86,4 +86,22 @@
         android:scaleType="centerCrop"
         android:src="@drawable/pic" />
 
+    <TextView
+        android:id="@+id/textView26"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView25"
+        android:layout_below="@+id/textView25"
+        android:layout_marginTop="60dp"
+        android:text="时间：" />
+
+    <TextView
+        android:id="@+id/yulun_time"
+        android:layout_width="80dp"
+        android:layout_height="20dp"
+        android:layout_alignBottom="@+id/textView26"
+        android:layout_marginStart="30dp"
+        android:layout_toEndOf="@+id/textView26"
+        android:hint="当前时间"/>
+
 </RelativeLayout>
