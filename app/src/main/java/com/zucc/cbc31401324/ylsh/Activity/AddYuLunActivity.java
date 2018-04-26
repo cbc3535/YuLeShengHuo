@@ -32,11 +32,15 @@ public class AddYuLunActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_icon:
-                Intent intent = new Intent(AddYuLunActivity.this, MainActivity.class);
+                Intent intent = new Intent(AddYuLunActivity.this, AddYuLunPicActivity.class);
                 AddYuLunActivity.this.startActivity(intent);
                 break;
             case R.id.putyulun:
                 //TODO HTTP 舆论信息
+                break;
+            case R.id.back:
+                finish();
+                break;
             default:break;
 
         }
