@@ -1,6 +1,7 @@
 package com.zucc.cbc31401324.ylsh.Activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -34,7 +35,8 @@ public class ExitActivity extends Activity implements
                 finish();
                 break;
             case R.id.exit:
-                Toast.makeText(ExitActivity.this, "保存成功!", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(ExitActivity.this, LoginActivity.class);
+                ExitActivity.this.startActivity(intent);
                 break;
             default:break;
 

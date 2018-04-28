@@ -49,7 +49,6 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
     EventHandler eventHandler;
     private int time=60;
     private boolean flag=true;
-
     private GSONError gsonerror;
     private static final int LOGIN_RESULT = 1;
     private Handler handler1 = new Handler(){
@@ -57,11 +56,13 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case LOGIN_RESULT:
-                    if(gsonerror == null){
-                        parseJASONWithGASON((String) msg.obj);
+                    parseJSONWithGSON((String)msg.obj);
+                    if(gsonerror.getError() == null){
                         //跳转登录页面
+                        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                        RegisterActivity.this.startActivity(intent);
                     }else {
-                        Log.d("EditSexActivity", "handleMessage: ");
+                        Log.d("RegisterActivity", "handleMessage: "+gsonerror.getError());
                     }
                     //TODO 更新UI
                     break;
@@ -105,17 +106,17 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
             int event=msg.arg1;
             int result=msg.arg2;
             Object data=msg.obj;
-//            if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
-//                if(result == SMSSDK.RESULT_COMPLETE) {
-//                    boolean smart = (Boolean)data;
-//                    if(smart) {
-//                        Toast.makeText(getApplicationContext(),"该手机号已经注册过，请重新输入",
-//                                Toast.LENGTH_LONG).show();
-//                        edit_phone.requestFocus();
-//                        return;
-//                    }
-//                }
-//            }
+            if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
+                if(result == SMSSDK.RESULT_COMPLETE) {
+                    boolean smart = (Boolean)data;
+                    if(smart) {
+                        Toast.makeText(getApplicationContext(),"该手机号已经注册过，请重新输入",
+                                Toast.LENGTH_LONG).show();
+                        edit_phone.requestFocus();
+                        return;
+                    }
+                }
+            }
             if(result==SMSSDK.RESULT_COMPLETE)
             {
 
@@ -219,9 +220,6 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                     }
                 };
                 t.start();
-                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                RegisterActivity.this.startActivity(intent);
-                // TODO 注册信息输入成功 跳转到主页面 需要在这里上传用户手机号和密码
                 break;
             default:
                 break;
@@ -280,7 +278,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
 
     }
 
-    private void parseJASONWithGASON(String text){
+    private void parseJSONWithGSON(String text){
         Gson gson = new Gson();
         gsonerror = gson.fromJson(text,GSONError.class);
     }

@@ -44,6 +44,7 @@ public class LoginActivity extends Activity implements
     private Context applicationContext = null ;
     private List<LoginResult> gsonloginresult;
     private static final int LOGIN_RESULT = 1;
+    private LoginResult loginResult;
     private GSONError gsonerror;
     private EditText et_password,et_userName;
     private Handler handler = new Handler(){
@@ -52,10 +53,7 @@ public class LoginActivity extends Activity implements
             switch (msg.what){
                 case LOGIN_RESULT:
                     parseJASONWithGASON((String) msg.obj);
-                    LoginResult result = new LoginResult();
-                    if (msg.obj != null) {
-                        //TODO 存放到LoginResult
-                        
+                    if (loginResult.getError() == null) {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         LoginActivity.this.startActivity(intent);
                     }

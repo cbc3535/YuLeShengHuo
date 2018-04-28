@@ -1,6 +1,7 @@
 package com.zucc.cbc31401324.ylsh.Activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -43,12 +44,13 @@ public class EditContactInfoActivity extends Activity implements
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case LOGIN_RESULT:
-                    if(gsonerror == null){
-                        parseJASONWithGASON((String) msg.obj);
+                    parseJASONWithGASON((String) msg.obj);
+                    if(gsonerror.getError() == null){
+                        Intent intent = new Intent(EditContactInfoActivity.this, PersonalprofileActivity.class);
+                        EditContactInfoActivity.this.startActivity(intent);
                     }else {
-                        Log.d("EditSexActivity", "handleMessage: ");
+                        Log.d("EditNameActivity", "handleMessage: "+gsonerror.getError());
                     }
-                    //TODO 更新UI
                     break;
             }
         }
@@ -115,6 +117,7 @@ public class EditContactInfoActivity extends Activity implements
                                 //发送消息，让主线程刷新ui显示text
                                 Message msg = handler.obtainMessage();
                                 msg.obj = text;
+                                msg.what = LOGIN_RESULT;
                                 handler.sendMessage(msg);
                             }
                         } catch (Exception e) {

@@ -1,6 +1,7 @@
 package com.zucc.cbc31401324.ylsh.Activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -42,12 +43,13 @@ public class EditSexActivity extends Activity implements
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case LOGIN_RESULT:
-                    if(gsonerror == null){
                     parseJASONWithGASON((String) msg.obj);
+                    if(gsonerror.getError() == null){
+                        Intent intent = new Intent(EditSexActivity.this, PersonalprofileActivity.class);
+                        EditSexActivity.this.startActivity(intent);
                     }else {
-                        Log.d("EditSexActivity", "handleMessage: ");
+                        Log.d("EditSexActivity", "handleMessage: "+gsonerror.getError());
                     }
-                    //TODO 更新UI
                     break;
             }
         }

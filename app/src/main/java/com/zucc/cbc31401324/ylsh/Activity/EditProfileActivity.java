@@ -1,6 +1,7 @@
 package com.zucc.cbc31401324.ylsh.Activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -42,12 +43,13 @@ public class EditProfileActivity extends Activity implements
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case LOGIN_RESULT:
-                    if(gsonerror == null){
-                        parseJASONWithGASON((String) msg.obj);
+                    parseJASONWithGASON((String) msg.obj);
+                    if(gsonerror.getError() == null){
+                        Intent intent = new Intent(EditProfileActivity.this, PersonalprofileActivity.class);
+                        EditProfileActivity.this.startActivity(intent);
                     }else {
-                        Log.d("EditSexActivity", "handleMessage: ");
+                        Log.d("EditSexActivity", "handleMessage: "+gsonerror.getError());
                     }
-                    //TODO 更新UI
                     break;
             }
         }
@@ -79,7 +81,7 @@ public class EditProfileActivity extends Activity implements
                 Thread t = new Thread(){
                     @Override
                     public void run() {
-                        String path = "http://192.168.13.13/Web/servlet/CheckLogin";
+                        String path = "";
                         //1.创建客户端对象
                         HttpClient hc = new DefaultHttpClient();
                         //2.创建post请求对象
@@ -106,6 +108,7 @@ public class EditProfileActivity extends Activity implements
 
                                 //发送消息，让主线程刷新ui显示text
                                 Message msg = handler.obtainMessage();
+                                msg.what = LOGIN_RESULT;
                                 msg.obj = text;
                                 handler.sendMessage(msg);
                             }
