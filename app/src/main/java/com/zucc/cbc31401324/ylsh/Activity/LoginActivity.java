@@ -109,6 +109,10 @@ public class LoginActivity extends Activity implements
 ////                            System.out.println(error);
 //                    }
 //                }).start();
+                if(phone.isEmpty()){
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    LoginActivity.this.startActivity(intent);
+                }
                 new Thread(new Runnable() {
                     @Override
                     public void run() {

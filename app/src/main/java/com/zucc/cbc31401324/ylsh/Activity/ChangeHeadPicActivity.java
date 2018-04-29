@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.os.StrictMode;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.zucc.cbc31401324.ylsh.Bin.GSONError;
+import com.zucc.cbc31401324.ylsh.Bin.LoginResult;
 import com.zucc.cbc31401324.ylsh.BuildConfig;
 import com.zucc.cbc31401324.ylsh.FileUtils;
 import com.zucc.cbc31401324.ylsh.R;
@@ -50,6 +52,7 @@ public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnC
     private CircleImageView circleImageView;
     private File mTmpFile;
     private File mCropImageFile;
+    private String pathpic;
     private static final int REQUEST_CAMERA = 100;
     private static final int REQUEST_GALLERY = 101;
     private static final int REQUEST_CROP = 102;
@@ -60,10 +63,10 @@ public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnC
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case LOGIN_RESULT:
-                    if(gsonerror == null){
+                    if(gsonerror.getError() == null){
                         parseJASONWithGASON((String) msg.obj);
                     }else {
-                        Log.d("EditSexActivity", "handleMessage: ");
+                        Log.d("ChangeHeadPicActivity", "handleMessage: ");
                     }
                     //TODO 更新UI
                     break;
@@ -84,6 +87,9 @@ public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnC
         });
         Button button = findViewById(R.id.btn_save);
         button.setOnClickListener(this);
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        builder.detectFileUriExposure();
     }
 
     private void setupDialog(){
@@ -203,7 +209,9 @@ public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnC
     //获取裁剪的图片保存地址
     private File getmCropImageFile(){
         if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
-            File file = new File(getExternalCacheDir(), System.currentTimeMillis() + ".jpg");
+            LoginResult loginResult = new LoginResult();
+//            System.currentTimeMillis()
+            File file = new File(getExternalCacheDir(),  loginResult.getUserId()+ ".jpg");
             return file;
         }
         return null;
@@ -245,10 +253,19 @@ public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnC
         return path;
     }
 
+    // getSrc
+    //
     @Override
     public void onClick(View view) {
+        // 图片保存
+        // loginresult src
+        // 图片发给服务器
         switch (view.getId()){
             case R.id.btn_save:
+                LoginResult loginResult = new LoginResult();
+                pathpic = loginResult.getUserId()+".jpg";
+//                LoginResult loginResult = new LoginResult();
+//                loginResult = mCropImageFile;
                 Intent intent =new Intent();
                 intent.putExtra("0",mCropImageFile);
                 setResult(0,intent);
@@ -263,7 +280,7 @@ public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnC
                         HttpPost hp = new HttpPost(path);
                         //TODO 如何将File类型数据放到List里面
                         //封装form表单提交的数据
-                        BasicNameValuePair bnvp = new BasicNameValuePair("userHeadSrc","");
+                        BasicNameValuePair bnvp = new BasicNameValuePair("userHeadSrc","pathpic");
                         List<BasicNameValuePair> parameters = new ArrayList<BasicNameValuePair>();
                         //把BasicNameValuePair放入集合中
                         parameters.add(bnvp);
@@ -280,6 +297,7 @@ public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnC
 
                                 //发送消息，让主线程刷新ui显示text
                                 Message msg = handler.obtainMessage();
+                                msg.what = LOGIN_RESULT;
                                 msg.obj = text;
                                 handler.sendMessage(msg);
                             }

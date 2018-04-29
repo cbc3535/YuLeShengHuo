@@ -1,9 +1,11 @@
 package com.zucc.cbc31401324.ylsh.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import com.baidu.mapapi.http.HttpClient;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zucc.cbc31401324.ylsh.Adapter.FishTogetherAdapter;
+import com.zucc.cbc31401324.ylsh.Bin.CheckFishTogether;
 import com.zucc.cbc31401324.ylsh.Bin.FishTogether;
 import com.zucc.cbc31401324.ylsh.R;
 
@@ -30,13 +33,20 @@ import java.util.List;
 
 public class Fragment_together_Fragment1 extends Fragment {
     private List<FishTogether> publicfishtogether = new ArrayList<FishTogether>();
+    private List<CheckFishTogether> checkFishTogethers = new ArrayList<CheckFishTogether>();
     private static final int LOGIN_RESULT = 1;
+    private CheckFishTogether cft = new CheckFishTogether();
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case LOGIN_RESULT:
                     parseJASONWithGASON((String) msg.obj);
+                    if(publicfishtogether.isEmpty()){
+                        StorageFT();
+                    }else {
+                        Log.d("FTF", "handleMessage: ");
+                    }
                      //TODO 更新UI
                     break;
             }
@@ -69,7 +79,7 @@ public class Fragment_together_Fragment1 extends Fragment {
                     if(code == 200){
                         InputStream is = conn.getInputStream();
                         String text = Utils.getTextFromStream(is);
-                        //TODO 数据请求成功 拿到约钓信息 is如何处理
+
                         Message message = new Message();
                         message.what = LOGIN_RESULT;
                         message.obj = text;
@@ -81,13 +91,13 @@ public class Fragment_together_Fragment1 extends Fragment {
             }
         }.start();
 
-//        FishTogether site = new FishTogether(R.drawable.pic,
-//                "cya",
-//                "1分钟前",
-//                "100m",
-//                "有没有人一起去钓鱼啊？",
-//                "2017-11-4 星期六",
-//                "浙江大学城市学院内河");
+//        FishTogether site = new FishTogether(R.drawable.pic, getSrc();
+//                "cya", //ft.getUserName()
+//                "1分钟前",// ft.getAddTime();
+//                "100m", //
+//                "有没有人一起去钓鱼啊？", //ft.getTitle
+//                "2017-11-4 星期六", // ft.getBeginTime()
+//                "浙江大学城市学院内河"); // ft.getAddress
 //        publicfishtogether.add(site);
 //        FishTogether site1 = new FishTogether(R.drawable.pic,
 //                "cbc",
@@ -118,7 +128,19 @@ public class Fragment_together_Fragment1 extends Fragment {
 
     private void parseJASONWithGASON(String text){
         Gson gson = new Gson();
-        List<FishTogether> publicfishtogether = gson.fromJson(text,new TypeToken<List<FishTogether>>(){}.getType());
-        this.publicfishtogether.addAll(publicfishtogether);
+        List<CheckFishTogether> checkFishTogethers = gson.fromJson(text,new TypeToken<List<CheckFishTogether>>(){}.getType());
+        this.checkFishTogethers.addAll(checkFishTogethers);
+    }
+    private void StorageFT(){
+        for(int i=0;i<checkFishTogethers.size();i++){
+            FishTogether site = new FishTogether(cft.getFishtogether_pic(),
+            cft.getMyfishtogether_name(),
+            cft.getMyfishtogether_time(),
+            cft.getMyfishtogether_distance(),
+            cft.getMyfishtogether_info(),
+            cft.getMyfishtogether_calendar(),
+            cft.getMyfishtogether_address());
+            publicfishtogether.add(site);
+        }
     }
 }

@@ -115,6 +115,7 @@ public class UpDataActivity extends Activity implements View.OnClickListener {
      */
     private void storage() {
         LBSStorageActivity.request(getRequestParams(), mHandler);
+
     }
 
     /**

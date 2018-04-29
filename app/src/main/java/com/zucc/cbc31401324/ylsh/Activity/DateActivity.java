@@ -96,9 +96,9 @@ public class DateActivity extends Activity implements
                 TextView addr = (TextView) findViewById(R.id.ok_site);
                 EditText info = (EditText)findViewById(R.id.info);
                 final String ftTime = time.getText().toString();
-                final String ftDetail = time.getText().toString();
+                final String ftDetail = info.getText().toString();
                 final String fpId = addr.getText().toString();
-                final String userHeadSrc = loginResult.getUserHeadSrc();
+//                final String userHeadSrc = loginResult.getUserHeadSrc();
                 final String userId = loginResult.getUserId();
                 Thread t = new Thread(){
                     @Override
