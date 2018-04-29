@@ -18,7 +18,14 @@ import com.google.gson.reflect.TypeToken;
 import com.zucc.cbc31401324.ylsh.Adapter.FishTogetherAdapter;
 import com.zucc.cbc31401324.ylsh.Bin.CheckFishTogether;
 import com.zucc.cbc31401324.ylsh.Bin.FishTogether;
+import com.zucc.cbc31401324.ylsh.Bin.LoginResult;
 import com.zucc.cbc31401324.ylsh.R;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -66,24 +73,35 @@ public class Fragment_together_Fragment1 extends Fragment {
         //TODO 约钓 最新发布
         // 我—>我的消息—>我发起的
         //发送消息，让主线程刷新ui显示text
+        LoginResult loginResult = new LoginResult();
+        final String userId = loginResult.getUserId();
         new Thread(){
             @Override
             public void run() {
+                String path = "";
+                //1.创建客户端对象
+                org.apache.http.client.HttpClient hc = new DefaultHttpClient();
+                //2.创建post请求对象
+                HttpPost hp = new HttpPost(path);
+                //封装form表单提交的数据
+                BasicNameValuePair bnvp = new BasicNameValuePair("name", userId);
+                List<BasicNameValuePair> parameters = new ArrayList<BasicNameValuePair>();
+                parameters.add(bnvp);
                 try {
-                    String path = "";
-                    URL url = new URL(path);
-                    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-                    conn.setRequestMethod("GET");
-                    conn.setConnectTimeout(5000);
-                    int code = conn.getResponseCode();
-                    if(code == 200){
-                        InputStream is = conn.getInputStream();
+                    //要提交的数据都已经在集合中了，把集合传给实体对象
+                    UrlEncodedFormEntity entity = new UrlEncodedFormEntity(parameters, "utf-8");
+                    //设置post请求对象的实体，其实就是把要提交的数据封装至post请求的输出流中
+                    hp.setEntity(entity);
+                    //3.使用客户端发送post请求
+                    HttpResponse hr = hc.execute(hp);
+                    if (hr.getStatusLine().getStatusCode() == 200) {
+                        InputStream is = hr.getEntity().getContent();
                         String text = Utils.getTextFromStream(is);
-
                         Message message = new Message();
                         message.what = LOGIN_RESULT;
                         message.obj = text;
                         handler.sendMessage(message);
+                        //发送消息，让主线程刷新ui显示text
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -99,31 +117,6 @@ public class Fragment_together_Fragment1 extends Fragment {
 //                "2017-11-4 星期六", // ft.getBeginTime()
 //                "浙江大学城市学院内河"); // ft.getAddress
 //        publicfishtogether.add(site);
-//        FishTogether site1 = new FishTogether(R.drawable.pic,
-//                "cbc",
-//                "10分钟前",
-//                "1000m",
-//                "一起去钓鱼啊？",
-//                "2017-12-14 星期六",
-//                "浙江大学城市学院");
-//        publicfishtogether.add(site1);
-//        FishTogether site2 = new FishTogether(R.drawable.pic,
-//                "cbc",
-//                "10分钟前",
-//                "1000m",
-//                "一起去钓鱼啊？",
-//                "2017-12-14 星期六",
-//                "浙江大学城市学院");
-//        publicfishtogether.add(site2);
-//        FishTogether site3 = new FishTogether(R.drawable.pic,
-//                "cbc",
-//                "10分钟前",
-//                "1000m",
-//                "一起去钓鱼啊？",
-//                "2017-12-14 星期六",
-//                "浙江大学城市学院");
-//        publicfishtogether.add(site3);
-
     }
 
     private void parseJASONWithGASON(String text){
