@@ -23,4 +23,12 @@ public class FishTogetherCreateUser{
     public void setUserHeadSrc(String userHeadSrc) {
         this.userHeadSrc = userHeadSrc;
     }
+
+    @Override
+    public String toString() {
+        return "FishTogetherCreateUser{" +
+                "userName='" + userName + '\'' +
+                ", userHeadSrc='" + userHeadSrc + '\'' +
+                '}';
+    }
 }

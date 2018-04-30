@@ -5,16 +5,17 @@ package com.zucc.cbc31401324.ylsh.Bin;
  */
 
 public class LoginResult {
-    public static String error;
-    public static String userId;
-    public static String userName;
-    public static String userSex;
-    public static String userHeadSrc;
-    public static String userDetail;
-    public static String userMail;
-    public static String userComDetail;
-    public static String isNotTalk;
-    public static String isNotFish;
+    public static LoginResult user = new LoginResult();
+    private String error;
+    private String userId;
+    private String userName;
+    private String userSex;
+    private String userHeadSrc;
+    private String userDetail;
+    private String userMail;
+    private String userComDetail;
+    private String isNotTalk;
+    private String isNotFish;
 
     public void setError(String error){this.error=error;}
     public String getError() {
@@ -49,5 +50,21 @@ public class LoginResult {
 
     public String getIsNotFish() {return isNotFish;}
     public void setIsNotFish(String isNotFish) {this.isNotFish = isNotFish;}
+
+    @Override
+    public String toString() {
+        return "LoginResult{" +
+                "error='" + error + '\'' +
+                ", userId='" + userId + '\'' +
+                ", userName='" + userName + '\'' +
+                ", userSex='" + userSex + '\'' +
+                ", userHeadSrc='" + userHeadSrc + '\'' +
+                ", userDetail='" + userDetail + '\'' +
+                ", userMail='" + userMail + '\'' +
+                ", userComDetail='" + userComDetail + '\'' +
+                ", isNotTalk='" + isNotTalk + '\'' +
+                ", isNotFish='" + isNotFish + '\'' +
+                '}';
+    }
 }
 

@@ -5,7 +5,7 @@ package com.zucc.cbc31401324.ylsh.Bin;
  */
 
 public class CheckFishTogether {
-//    private int fishtogether_pic;
+    //    private int fishtogether_pic;
 //    private String myfishtogether_name;
 //    private String myfishtogether_time;
 //    private String myfishtogether_distance;
@@ -65,5 +65,17 @@ public class CheckFishTogether {
 
     public void setUser(FishTogetherCreateUser user) {
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "CheckFishTogether{" +
+                "fpName='" + fpName + '\'' +
+                ", ftAddTime='" + ftAddTime + '\'' +
+                ", ftId=" + ftId +
+                ", ftTime='" + ftTime + '\'' +
+                ", ftDetail='" + ftDetail + '\'' +
+                ", user=" + user +
+                '}';
     }
 }

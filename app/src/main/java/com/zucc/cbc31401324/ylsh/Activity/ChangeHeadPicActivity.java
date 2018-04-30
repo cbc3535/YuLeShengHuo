@@ -1,5 +1,6 @@
 package com.zucc.cbc31401324.ylsh.Activity;
 
+import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -18,17 +19,21 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.zucc.cbc31401324.ylsh.Bin.FormFile;
 import com.zucc.cbc31401324.ylsh.Bin.GSONError;
 import com.zucc.cbc31401324.ylsh.Bin.LoginResult;
 import com.zucc.cbc31401324.ylsh.BuildConfig;
+import com.zucc.cbc31401324.ylsh.CachePathUtil;
 import com.zucc.cbc31401324.ylsh.FileUtils;
 import com.zucc.cbc31401324.ylsh.R;
+import com.zucc.cbc31401324.ylsh.http.HttpUtil;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -38,8 +43,13 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -48,7 +58,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by chenbaichang on 2018/3/11.
  */
 
-public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnClickListener{
+public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnClickListener {
     private CircleImageView circleImageView;
     private File mTmpFile;
     private File mCropImageFile;
@@ -58,17 +68,21 @@ public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnC
     private static final int REQUEST_CROP = 102;
     private GSONError gsonerror;
     private static final int LOGIN_RESULT = 1;
-    private Handler handler = new Handler(){
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            int code = (int) msg.obj;
+            switch (msg.what) {
                 case LOGIN_RESULT:
-                    if(gsonerror.getError() == null){
-                        parseJASONWithGASON((String) msg.obj);
-                    }else {
+                    if (200 == code) {
+                        //TODO 更新UI
+                        LoginResult.user.setUserHeadSrc(LoginResult.user.getUserId() + ".jpg");
+                        Log.i("cws:", LoginResult.user.getUserHeadSrc());
+                    } else {
+                        // TODO 失败 报错
                         Log.d("ChangeHeadPicActivity", "handleMessage: ");
                     }
-                    //TODO 更新UI
                     break;
             }
         }
@@ -78,7 +92,7 @@ public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.change_headpic);
-        circleImageView = (CircleImageView)findViewById(R.id.circleImage);
+        circleImageView = (CircleImageView) findViewById(R.id.circleImage);
         circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,15 +106,16 @@ public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnC
         builder.detectFileUriExposure();
     }
 
-    private void setupDialog(){
+    private void setupDialog() {
+        //show window
         final String[] items = {"拍照", "相册"};
         AlertDialog.Builder listDialog = new AlertDialog.Builder(ChangeHeadPicActivity.this);
         listDialog.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (i == 0){
+                if (i == 0) {
                     camera();
-                }else if (i == 1){
+                } else if (i == 1) {
                     gallery();
                 }
             }
@@ -108,22 +123,22 @@ public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnC
         listDialog.show();
     }
 
-    private void gallery(){
+    private void gallery() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, REQUEST_GALLERY);
     }
 
-    private void camera(){
+    private void camera() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (cameraIntent.resolveActivity(getPackageManager()) != null) {
             mTmpFile = new File(FileUtils.createRootPath(getBaseContext()) + "/" + System.currentTimeMillis() + ".jpg");
             FileUtils.createFile(mTmpFile);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                         FileProvider.getUriForFile(getBaseContext(), BuildConfig.APPLICATION_ID + ".provider", mTmpFile));
-            }else {
+            } else {
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mTmpFile));
             }
             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mTmpFile));
@@ -133,36 +148,37 @@ public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnC
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode){
+        switch (requestCode) {
             case REQUEST_CAMERA:
-                if (resultCode == RESULT_OK){
+                if (resultCode == RESULT_OK) {
                     crop(mTmpFile.getAbsolutePath());
-                }else {
+                } else {
                     Toast.makeText(this, "拍照失败", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
             case REQUEST_CROP:
-                if (resultCode == RESULT_OK){
+                if (resultCode == RESULT_OK) {
+                    //更换图片
                     circleImageView.setImageURI(Uri.fromFile(mCropImageFile));
-                }else {
+                    Log.i("cws", Uri.fromFile(mCropImageFile).getPath());
+                } else {
                     Toast.makeText(this, "截图失败", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
             case REQUEST_GALLERY:
-                if (resultCode == RESULT_OK && data != null){
+                if (resultCode == RESULT_OK && data != null) {
                     String imagePath = handleImage(data);
                     crop(imagePath);
-                }else {
+                } else {
                     Toast.makeText(this, "打开图库失败", Toast.LENGTH_SHORT).show();
                 }
                 break;
-
         }
     }
 
-    private void crop(String imagePath){
+    private void crop(String imagePath) {
         //mCropImageFile = FileUtils.createTmpFile(getBaseContext());
         mCropImageFile = getmCropImageFile();
         Intent intent = new Intent("com.android.camera.action.CROP");
@@ -181,7 +197,7 @@ public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnC
     }
 
     //把fileUri转换成ContentUri
-    public Uri getImageContentUri(File imageFile){
+    public Uri getImageContentUri(File imageFile) {
         String filePath = imageFile.getAbsolutePath();
         Cursor cursor = getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
@@ -207,11 +223,11 @@ public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnC
     }
 
     //获取裁剪的图片保存地址
-    private File getmCropImageFile(){
-        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
+    private File getmCropImageFile() {
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             LoginResult loginResult = new LoginResult();
 //            System.currentTimeMillis()
-            File file = new File(getExternalCacheDir(),  loginResult.getUserId()+ ".jpg");
+            File file = new File(getExternalCacheDir(), LoginResult.user.getUserId() + ".jpg");
             return file;
         }
         return null;
@@ -260,51 +276,60 @@ public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnC
         // 图片保存
         // loginresult src
         // 图片发给服务器
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_save:
-                LoginResult loginResult = new LoginResult();
-                pathpic = loginResult.getUserId()+".jpg";
 //                LoginResult loginResult = new LoginResult();
 //                loginResult = mCropImageFile;
-                Intent intent =new Intent();
-                intent.putExtra("0",mCropImageFile);
-                setResult(0,intent);
+                Intent intent = new Intent();
+                intent.putExtra("0", mCropImageFile);
+                setResult(0, intent);
                 finish();
-                Thread t = new Thread(){
+                Thread t = new Thread() {
                     @Override
                     public void run() {
-                        String path = "";
-                        //1.创建客户端对象
-                        HttpClient hc = new DefaultHttpClient();
-                        //2.创建post请求对象
-                        HttpPost hp = new HttpPost(path);
-                        //TODO 如何将File类型数据放到List里面
-                        //封装form表单提交的数据
-                        BasicNameValuePair bnvp = new BasicNameValuePair("userHeadSrc","pathpic");
-                        List<BasicNameValuePair> parameters = new ArrayList<BasicNameValuePair>();
-                        //把BasicNameValuePair放入集合中
-                        parameters.add(bnvp);
-                        try {
-                            //要提交的数据都已经在集合中了，把集合传给实体对象
-                            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(parameters, "utf-8");
-                            //设置post请求对象的实体，其实就是把要提交的数据封装至post请求的输出流中
-                            hp.setEntity(entity);
-                            //3.使用客户端发送post请求
-                            HttpResponse hr = hc.execute(hp);
-                            if(hr.getStatusLine().getStatusCode() == 200){
-                                InputStream is = hr.getEntity().getContent();
-                                String text = Utils.getTextFromStream(is);
+                        HashMap<String, String> params = new HashMap<>();
+                        params.put("userId", LoginResult.user.getUserId());
+                        params.put("userHeadSrc", LoginResult.user.getUserId() + ".jpg");
+                        int code = HttpUtil.post(HttpUtil.serverPath + "/user/upload", params, mCropImageFile);
 
-                                //发送消息，让主线程刷新ui显示text
-                                Message msg = handler.obtainMessage();
-                                msg.what = LOGIN_RESULT;
-                                msg.obj = text;
-                                handler.sendMessage(msg);
-                            }
-                        } catch (Exception e) {
-                            // TODO Auto-generated catch block
+                        try {
+                            FormFile file = new FormFile(mCropImageFile.getName(), HttpUtil.readFileImage(mCropImageFile), "upload", "image/jpeg");
+                            HttpUtil.post(HttpUtil.serverPath + "/user/upload", params, new FormFile[]{file});
+                        } catch (IOException e) {
                             e.printStackTrace();
                         }
+//                        String path = "";
+//                        //1.创建客户端对象
+//                        HttpClient hc = new DefaultHttpClient();
+//                        //2.创建post请求对象
+//                        HttpPost hp = new HttpPost(path);
+//                        //TODO 如何将File类型数据放到List里面
+//                        //封装form表单提交的数据
+//                        BasicNameValuePair bnvp = new BasicNameValuePair("userHeadSrc", "pathpic");
+//                        List<BasicNameValuePair> parameters = new ArrayList<BasicNameValuePair>();
+//                        //把BasicNameValuePair放入集合中
+//                        parameters.add(bnvp);
+//                        try {
+//                            //要提交的数据都已经在集合中了，把集合传给实体对象
+//                            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(parameters, "utf-8");
+//                            //设置post请求对象的实体，其实就是把要提交的数据封装至post请求的输出流中
+//                            hp.setEntity(entity);
+//                            //3.使用客户端发送post请求
+//                            HttpResponse hr = hc.execute(hp);
+//                            if (hr.getStatusLine().getStatusCode() == 200) {
+//                                InputStream is = hr.getEntity().getContent();
+//                                String text = Utils.getTextFromStream(is);
+//
+//                        //发送消息，让主线程刷新ui显示text
+                        Message msg = handler.obtainMessage();
+                        msg.what = LOGIN_RESULT;
+                        msg.obj = code;
+                        handler.sendMessage(msg);
+//                            }
+//                        } catch (Exception e) {
+//                            // TODO Auto-generated catch block
+//                            e.printStackTrace();
+//                        }
                     }
                 };
                 t.start();
@@ -313,8 +338,9 @@ public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnC
                 break;
         }
     }
-    private void parseJASONWithGASON(String text){
+
+    private void parseJASONWithGASON(String text) {
         Gson gson = new Gson();
-        gsonerror = gson.fromJson(text,GSONError.class);
+        gsonerror = gson.fromJson(text, GSONError.class);
     }
 }

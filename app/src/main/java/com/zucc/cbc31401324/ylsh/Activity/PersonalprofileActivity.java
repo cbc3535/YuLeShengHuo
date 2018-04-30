@@ -7,12 +7,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.zucc.cbc31401324.ylsh.Bin.LoginResult;
+import com.zucc.cbc31401324.ylsh.CachePathUtil;
 import com.zucc.cbc31401324.ylsh.R;
 
 import java.io.File;
@@ -28,28 +30,30 @@ public class PersonalprofileActivity extends Activity implements
     private TextView tv_name, tv_sex;
     private CircleImageView circleImageView;
     private static final int PERSONALPROFILE_RESULT = 1;
-    private Handler handler = new Handler(){
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case PERSONALPROFILE_RESULT:
-                    login((LoginResult)msg.obj);
+                    login();
                     break;
             }
         }
     };
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.personalprofile);
-        tv_name = (TextView)findViewById(R.id.tv_name);
-        tv_sex = (TextView)findViewById(R.id.tv_sex);
-        Button btn=(Button)findViewById(R.id.pic_more);
-        Button btn1=(Button)findViewById(R.id.name_more);
-        Button btn2=(Button)findViewById(R.id.sex_more);
-        Button btn3=(Button)findViewById(R.id.profile_more);
-        Button btn4=(Button)findViewById(R.id.contactinfo_more);
-        Button btn5=(Button)findViewById(R.id.set_back);
+        tv_name = (TextView) findViewById(R.id.tv_name);
+        tv_sex = (TextView) findViewById(R.id.tv_sex);
+        Button btn = (Button) findViewById(R.id.pic_more);
+        Button btn1 = (Button) findViewById(R.id.name_more);
+        Button btn2 = (Button) findViewById(R.id.sex_more);
+        Button btn3 = (Button) findViewById(R.id.profile_more);
+        Button btn4 = (Button) findViewById(R.id.contactinfo_more);
+        Button btn5 = (Button) findViewById(R.id.set_back);
         circleImageView = findViewById(R.id.iv_icon);
         btn.setOnClickListener(this);
         btn1.setOnClickListener(this);
@@ -73,16 +77,18 @@ public class PersonalprofileActivity extends Activity implements
     }
 
     @SuppressLint("ShowToast")
-    private void login(LoginResult loginresult){
+    private void login() {
+        Log.i("cws", LoginResult.user.toString());
         //TODO set头像有问题
-        if (loginresult.getUserHeadSrc() != null) {
-            circleImageView.setImageURI(Uri.fromFile(new File(loginresult.getUserHeadSrc())));
+        if (LoginResult.user.getUserHeadSrc() != null && !LoginResult.user.getUserHeadSrc().equals("default.jpg")) {
+            Log.i("CachePath", CachePathUtil.getDiskCachePath(getApplicationContext()));
+            circleImageView.setImageURI(Uri.fromFile(new File(CachePathUtil.getDiskCachePath(getApplicationContext()) + LoginResult.user.getUserHeadSrc())));
         }
-        if(loginresult.getUserName()!=null){
-            tv_name.setText(loginresult.getUserName());
+        if (LoginResult.user.getUserName() != null) {
+            tv_name.setText(LoginResult.user.getUserName());
         }
-        if(loginresult.getUserSex()!=null){
-            tv_sex.setText(loginresult.getUserSex());
+        if (LoginResult.user.getUserSex() != null) {
+            tv_sex.setText(LoginResult.user.getUserSex());
         }
 //        else {
 //            Toast.makeText(getApplicationContext(),"登录失败",Toast.LENGTH_LONG).show();
@@ -90,13 +96,12 @@ public class PersonalprofileActivity extends Activity implements
     }
 
 
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.pic_more:
                 Intent intent = new Intent(PersonalprofileActivity.this, ChangeHeadPicActivity.class);
-                PersonalprofileActivity.this.startActivityForResult(intent,0);
+                PersonalprofileActivity.this.startActivityForResult(intent, 0);
                 break;
             case R.id.name_more:
                 Intent intent1 = new Intent(PersonalprofileActivity.this, EditNameActivity.class);
@@ -117,15 +122,17 @@ public class PersonalprofileActivity extends Activity implements
             case R.id.set_back:
                 finish();
                 break;
-            default:break;
+            default:
+                break;
 
         }
 
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode==0&&resultCode ==0){
-            circleImageView.setImageURI(Uri.fromFile((File)data.getExtras().get("0")));
+        if (requestCode == 0 && resultCode == 0) {
+            circleImageView.setImageURI(Uri.fromFile((File) data.getExtras().get("0")));
         }
     }
 

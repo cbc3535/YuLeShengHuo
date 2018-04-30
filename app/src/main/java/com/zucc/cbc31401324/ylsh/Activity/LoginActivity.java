@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.zucc.cbc31401324.ylsh.Bin.GSONError;
 import com.zucc.cbc31401324.ylsh.Bin.LoginResult;
 import com.zucc.cbc31401324.ylsh.R;
 import com.zucc.cbc31401324.ylsh.http.HttpUtil;
@@ -27,11 +26,8 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.InputStream;
-import java.security.BasicPermission;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,18 +38,16 @@ import java.util.List;
 public class LoginActivity extends Activity implements
         android.view.View.OnClickListener {
     private Context applicationContext = null ;
-    private List<LoginResult> gsonloginresult;
     private static final int LOGIN_RESULT = 1;
-    private LoginResult loginResult;
-    private GSONError gsonerror;
     private EditText et_password,et_userName;
+    @SuppressLint("HandlerLeak")
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case LOGIN_RESULT:
                     parseJASONWithGASON((String) msg.obj);
-                    if (loginResult.getError() == null) {
+                    if (LoginResult.user.getError().isEmpty()) {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         LoginActivity.this.startActivity(intent);
                     }
@@ -116,14 +110,14 @@ public class LoginActivity extends Activity implements
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        String path = "";
+                        String path = HttpUtil.serverPath + "/user/login";
                         //1.创建客户端对象
                         HttpClient hc = new DefaultHttpClient();
                         //2.创建post请求对象
                         HttpPost hp = new HttpPost(path);
                         //封装form表单提交的数据
-                        BasicNameValuePair bnvp = new BasicNameValuePair("name", phone);
-                        BasicNameValuePair bnvp2 = new BasicNameValuePair("pass", pass);
+                        BasicNameValuePair bnvp = new BasicNameValuePair("userPhone", phone);
+                        BasicNameValuePair bnvp2 = new BasicNameValuePair("userPwd", pass);
                         List<BasicNameValuePair> parameters = new ArrayList<BasicNameValuePair>();
                       //1.GSON.toJSONResult
                         //2.HTTP -> GSON
@@ -165,18 +159,7 @@ public class LoginActivity extends Activity implements
     }
     private void parseJASONWithGASON(String text){
         Gson gson = new Gson();
-        List<LoginResult> gsonloginresult = gson.fromJson(text,new TypeToken<List<LoginResult>>(){}.getType());
-        this.gsonloginresult.addAll(gsonloginresult);
-    }
-
-    @SuppressLint("ShowToast")
-    private void login(LoginResult result){
-        if (result.getError() != null) {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            LoginActivity.this.startActivity(intent);
-        }
-        else {
-            Toast.makeText(getApplicationContext(),"登录失败",Toast.LENGTH_LONG).show();
-        }
+        LoginResult.user = gson.fromJson(text,new TypeToken<LoginResult>(){}.getType());
+//        List<LoginResult> gsonloginresult = gson.fromJson(text,new TypeToken<List<LoginResult>>(){}.getType());
     }
 }

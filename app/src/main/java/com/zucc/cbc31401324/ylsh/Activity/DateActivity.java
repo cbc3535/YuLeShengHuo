@@ -1,5 +1,6 @@
 package com.zucc.cbc31401324.ylsh.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import com.zucc.cbc31401324.ylsh.Bin.GSONError;
 import com.zucc.cbc31401324.ylsh.Bin.LoginResult;
 import com.zucc.cbc31401324.ylsh.R;
 import com.zucc.cbc31401324.ylsh.SiteMoreChoiceActivity;
+import com.zucc.cbc31401324.ylsh.http.HttpUtil;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -26,6 +28,8 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -42,36 +46,41 @@ public class DateActivity extends Activity implements
     private DatePickerDialog mDataPicker;
     public TextView okcalendar;
     private TextView oksite;
-    private GSONError gsonerror;
+    private String gsonerror;
     private static final int LOGIN_RESULT = 1;
-    private Handler handler = new Handler(){
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case LOGIN_RESULT:
-                    if(gsonerror == null){
+                    if (gsonerror == null) {
                         parseJASONWithGASON((String) msg.obj);
-                    }else {
-                        Log.d("EditSexActivity", "handleMessage: ");
+                    } else {
+                        Log.d("DateActivity", "handleMessage: ");
+                    }
+                    if(gsonerror.isEmpty()){
+                        // TODO
                     }
                     //TODO 更新UI
                     break;
             }
         }
     };
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.date);
         oksite = findViewById(R.id.ok_site);
-        okcalendar = (TextView)findViewById(R.id.ok_calendar);
-        Button btn = (Button)findViewById(R.id.back);
+        okcalendar = (TextView) findViewById(R.id.ok_calendar);
+        Button btn = (Button) findViewById(R.id.back);
         btn.setOnClickListener(this);
         TextView tv = (TextView) findViewById(R.id.putyulun);
         tv.setOnClickListener(this);
-        Button btn1 = (Button)findViewById(R.id.calendar_more);
+        Button btn1 = (Button) findViewById(R.id.calendar_more);
         btn1.setOnClickListener(this);
-        Button btn2 = (Button)findViewById(R.id.site_more);
+        Button btn2 = (Button) findViewById(R.id.site_more);
         btn2.setOnClickListener(this);
     }
 
@@ -79,14 +88,14 @@ public class DateActivity extends Activity implements
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.calendar_more:
-            openDatePicker();
+                openDatePicker();
                 break;
             case R.id.back:
                 finish();
                 break;
             case R.id.site_more:
                 Intent intent2 = new Intent(DateActivity.this, SiteMoreChoiceActivity.class);
-                DateActivity.this.startActivityForResult(intent2,0);
+                DateActivity.this.startActivityForResult(intent2, 0);
                 break;
             case R.id.putyulun:
                 //TODO 向后台传约钓信息 同时 回到上一级页面
@@ -94,17 +103,17 @@ public class DateActivity extends Activity implements
                 LoginResult loginResult = new LoginResult();
                 TextView time = (TextView) findViewById(R.id.ok_calendar);
                 TextView addr = (TextView) findViewById(R.id.ok_site);
-                EditText info = (EditText)findViewById(R.id.info);
+                EditText info = (EditText) findViewById(R.id.info);
                 final String ftTime = time.getText().toString();
                 final String ftDetail = info.getText().toString();
-                final String fpId = addr.getText().toString();
+                final String fpName = addr.getText().toString();
 //                final String userHeadSrc = loginResult.getUserHeadSrc();
-                final String userId = loginResult.getUserId();
-                Thread t = new Thread(){
+                final String userId = LoginResult.user.getUserId();
+                Thread t = new Thread() {
                     @Override
                     public void run() {
                         //TODO ip Address
-                        String path = "";
+                        String path = HttpUtil.serverPath + "/ft/add";
                         //1.创建客户端对象
                         HttpClient hc = new DefaultHttpClient();
                         //2.创建post请求对象
@@ -112,7 +121,7 @@ public class DateActivity extends Activity implements
                         //封装form表单提交的数据
                         BasicNameValuePair bnvp3 = new BasicNameValuePair("userId", userId);
                         BasicNameValuePair bnvp = new BasicNameValuePair("ftTime", ftTime);
-                        BasicNameValuePair bnvp2 = new BasicNameValuePair("fpId", fpId);
+                        BasicNameValuePair bnvp2 = new BasicNameValuePair("fpName", fpName);
                         BasicNameValuePair bnvp4 = new BasicNameValuePair("ftDetail", ftDetail);
                         List<BasicNameValuePair> parameters = new ArrayList<BasicNameValuePair>();
                         //把BasicNameValuePair放入集合中
@@ -127,7 +136,7 @@ public class DateActivity extends Activity implements
                             hp.setEntity(entity);
                             //3.使用客户端发送post请求
                             HttpResponse hr = hc.execute(hp);
-                            if(hr.getStatusLine().getStatusCode() == 200){
+                            if (hr.getStatusLine().getStatusCode() == 200) {
                                 InputStream is = hr.getEntity().getContent();
                                 String text = Utils.getTextFromStream(is);
 
@@ -145,19 +154,27 @@ public class DateActivity extends Activity implements
                 };
                 t.start();
                 break;
-            default:break;
+            default:
+                break;
 
         }
     }
-    private void parseJASONWithGASON(String text){
-        Gson gson = new Gson();
-        gsonerror = gson.fromJson(text,GSONError.class);
+
+    private void parseJASONWithGASON(String text) {
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(text);
+            gsonerror = jsonObject.getString("error");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void openDatePicker(){
+    private void openDatePicker() {
         getDatePickerDialog();
         mDataPicker.show();
     }
+
     private void getDatePickerDialog() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
@@ -172,9 +189,10 @@ public class DateActivity extends Activity implements
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode ==0&&resultCode==0){
+        if (requestCode == 0 && resultCode == 0) {
             oksite.setText(data.getExtras().getString("0"));
         }
     }

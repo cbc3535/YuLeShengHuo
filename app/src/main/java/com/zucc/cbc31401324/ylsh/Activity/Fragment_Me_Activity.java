@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.zucc.cbc31401324.ylsh.Bin.LoginResult;
+import com.zucc.cbc31401324.ylsh.CachePathUtil;
 import com.zucc.cbc31401324.ylsh.R;
 
 import java.io.File;
@@ -30,25 +32,26 @@ public class Fragment_Me_Activity extends Fragment implements View.OnClickListen
     private Button user_sex;
     private CircleImageView circleImageView;
     private static final int PERSONALPROFILE_RESULT = 1;
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case PERSONALPROFILE_RESULT:
-                    login((LoginResult)msg.obj);
+                    login();
                     break;
             }
         }
     };
+
     @Override
-    public View onCreateView(LayoutInflater inflater , ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tab_me, container, false);
-        user_name = (TextView)view.findViewById(R.id.user_name);
-        user_sex = (Button)view.findViewById(R.id.user_sex);
-        TextView tv1 = (TextView)view.findViewById(R.id.personal);
-        TextView tv2 = (TextView)view.findViewById(R.id.myfishsite);
-        TextView tv5 = (TextView)view.findViewById(R.id.mynotice);
-        TextView tv6=(TextView)view.findViewById(R.id.setting);
+        user_name = (TextView) view.findViewById(R.id.user_name);
+        user_sex = (Button) view.findViewById(R.id.user_sex);
+        TextView tv1 = (TextView) view.findViewById(R.id.personal);
+        TextView tv2 = (TextView) view.findViewById(R.id.myfishsite);
+        TextView tv5 = (TextView) view.findViewById(R.id.mynotice);
+        TextView tv6 = (TextView) view.findViewById(R.id.setting);
         tv1.setOnClickListener(this);
         tv2.setOnClickListener(this);
         tv5.setOnClickListener(this);
@@ -69,17 +72,21 @@ public class Fragment_Me_Activity extends Fragment implements View.OnClickListen
     }
 
     @SuppressLint("ShowToast")
-    private void login(LoginResult loginresult){
+    private void login() {
         //TODO set头像有问题
-        if (loginresult.getUserHeadSrc() != null) {
-            circleImageView.setImageURI(Uri.fromFile(new File(loginresult.getUserHeadSrc())));
+        if (LoginResult.user.getUserHeadSrc() != null && !LoginResult.user.getUserHeadSrc().equals("default.jpg")) {
+            Log.i("CachePath", CachePathUtil.getDiskCachePath(this.getContext()));
+            circleImageView.setImageURI(Uri.fromFile(new File(CachePathUtil.getDiskCachePath(this.getContext()) + LoginResult.user.getUserHeadSrc())));
         }
-        if(loginresult.getUserName()!=null){
-            user_name.setText(loginresult.getUserName());
+        if (LoginResult.user.getUserName() != null) {
+            user_name.setText(LoginResult.user.getUserName());
         }
         //TODO 需要知道性别返回值
-        if(loginresult.getUserSex()!=null){
-            user_sex.setBackgroundResource(R.drawable.sex_men);
+        if (LoginResult.user.getUserSex() != null) {
+            if (LoginResult.user.getUserSex().equals("男"))
+                user_sex.setBackgroundResource(R.drawable.sex_men);
+            else
+                user_sex.setBackgroundResource(R.drawable.sex_women);
         }
 //        else {
 //            Toast.makeText(getApplicationContext(),"登录失败",Toast.LENGTH_LONG).show();
@@ -105,7 +112,8 @@ public class Fragment_Me_Activity extends Fragment implements View.OnClickListen
                 Intent intent1 = new Intent(getActivity(), ExitActivity.class);
                 Fragment_Me_Activity.this.startActivity(intent1);
                 break;
-            default:break;
+            default:
+                break;
 
         }
 
