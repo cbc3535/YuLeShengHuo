@@ -263,7 +263,6 @@ public class UpDataActivity extends Activity implements View.OnClickListener {
                 Thread t = new Thread(){
                     @Override
                     public void run() {
-                        //TODO 需要知道公网地址
                         String path = "";
                         //1.创建客户端对象
                         HttpClient hc = new DefaultHttpClient();

@@ -1,5 +1,6 @@
 package com.zucc.cbc31401324.ylsh.Activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -43,6 +44,7 @@ public class Fragment_together_Fragment1 extends Fragment {
     private List<CheckFishTogether> checkFishTogethers = new ArrayList<CheckFishTogether>();
     private static final int LOGIN_RESULT = 1;
     private CheckFishTogether cft = new CheckFishTogether();
+    @SuppressLint("HandlerLeak")
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -126,13 +128,13 @@ public class Fragment_together_Fragment1 extends Fragment {
     }
     private void StorageFT(){
         for(int i=0;i<checkFishTogethers.size();i++){
-            FishTogether site = new FishTogether(cft.getFishtogether_pic(),
-            cft.getMyfishtogether_name(),
-            cft.getMyfishtogether_time(),
-            cft.getMyfishtogether_distance(),
-            cft.getMyfishtogether_info(),
-            cft.getMyfishtogether_calendar(),
-            cft.getMyfishtogether_address());
+            FishTogether site = new FishTogether(1,//TODO 图片
+            cft.getUser().getUserName(),
+            cft.getFtAddTime(), // TODO 计算时间差
+            "100m",
+            cft.getFtDetail(),
+            cft.getFtTime(),
+            cft.getFpName());
             publicfishtogether.add(site);
         }
     }

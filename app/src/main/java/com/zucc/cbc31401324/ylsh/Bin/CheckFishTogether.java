@@ -5,67 +5,65 @@ package com.zucc.cbc31401324.ylsh.Bin;
  */
 
 public class CheckFishTogether {
-    private int fishtogether_pic;
-    private String myfishtogether_name;
-    private String myfishtogether_time;
-    private String myfishtogether_distance;
-    private String myfishtogether_info;
-    private String myfishtogether_calendar;
-    private String myfishtogether_address;
+//    private int fishtogether_pic;
+//    private String myfishtogether_name;
+//    private String myfishtogether_time;
+//    private String myfishtogether_distance;
+//    private String myfishtogether_info;
+//    private String myfishtogether_calendar;
+//    private String myfishtogether_address;
+    private String fpName; // 钓点名称
+    private String ftAddTime; // 约钓添加时间
+    private Integer ftId; // 约钓ID
+    private String ftTime; // 约钓开始时间
+    private String ftDetail; // 约钓名称
+    private FishTogetherCreateUser user; // 约钓发起者的信息
 
-    public int getFishtogether_pic() {
-        return fishtogether_pic;
+    public String getFpName() {
+        return fpName;
     }
 
-    public void setFishtogether_pic(int fishtogether_pic) {
-        this.fishtogether_pic = fishtogether_pic;
+    public void setFpName(String fpName) {
+        this.fpName = fpName;
     }
 
-    public String getMyfishtogether_name() {
-        return myfishtogether_name;
+    public String getFtAddTime() {
+        return ftAddTime;
     }
 
-    public void setMyfishtogether_name(String myfishtogether_name) {
-        this.myfishtogether_name = myfishtogether_name;
+    public void setFtAddTime(String ftAddTime) {
+        this.ftAddTime = ftAddTime;
     }
 
-    public String getMyfishtogether_time() {
-        return myfishtogether_time;
+    public Integer getFtId() {
+        return ftId;
     }
 
-    public void setMyfishtogether_time(String myfishtogether_time) {
-        this.myfishtogether_time = myfishtogether_time;
+    public void setFtId(Integer ftId) {
+        this.ftId = ftId;
     }
 
-    public String getMyfishtogether_distance() {
-        return myfishtogether_distance;
+    public String getFtTime() {
+        return ftTime;
     }
 
-    public void setMyfishtogether_distance(String myfishtogether_distance) {
-        this.myfishtogether_distance = myfishtogether_distance;
+    public void setFtTime(String ftTime) {
+        this.ftTime = ftTime;
     }
 
-    public String getMyfishtogether_info() {
-        return myfishtogether_info;
+    public String getFtDetail() {
+        return ftDetail;
     }
 
-    public void setMyfishtogether_info(String myfishtogether_info) {
-        this.myfishtogether_info = myfishtogether_info;
+    public void setFtDetail(String ftDetail) {
+        this.ftDetail = ftDetail;
     }
 
-    public String getMyfishtogether_calendar() {
-        return myfishtogether_calendar;
+    public FishTogetherCreateUser getUser() {
+        return user;
     }
 
-    public void setMyfishtogether_calendar(String myfishtogether_calendar) {
-        this.myfishtogether_calendar = myfishtogether_calendar;
-    }
-
-    public String getMyfishtogether_address() {
-        return myfishtogether_address;
-    }
-
-    public void setMyfishtogether_address(String myfishtogether_address) {
-        this.myfishtogether_address = myfishtogether_address;
+    public void setUser(FishTogetherCreateUser user) {
+        this.user = user;
     }
 }
