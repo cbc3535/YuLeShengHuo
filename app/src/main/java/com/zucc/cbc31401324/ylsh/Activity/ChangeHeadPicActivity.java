@@ -287,6 +287,8 @@ public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnC
                 Thread t = new Thread() {
                     @Override
                     public void run() {
+                        if (mCropImageFile != null)
+                            Log.i("cws", mCropImageFile.toString());
                         HashMap<String, String> params = new HashMap<>();
                         params.put("userId", LoginResult.user.getUserId());
                         params.put("userHeadSrc", LoginResult.user.getUserId() + ".jpg");

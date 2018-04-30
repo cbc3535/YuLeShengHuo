@@ -8,6 +8,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.zucc.cbc31401324.ylsh.Bin.LoginResult;
 import com.zucc.cbc31401324.ylsh.R;
 
 /**
@@ -35,6 +36,7 @@ public class ExitActivity extends Activity implements
                 finish();
                 break;
             case R.id.exit:
+                LoginResult.user = new LoginResult();
                 Intent intent = new Intent(ExitActivity.this, LoginActivity.class);
                 ExitActivity.this.startActivity(intent);
                 break;

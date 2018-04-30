@@ -1,5 +1,6 @@
 package com.zucc.cbc31401324.ylsh.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.google.gson.Gson;
 import com.zucc.cbc31401324.ylsh.Bin.GSONError;
 import com.zucc.cbc31401324.ylsh.Bin.LoginResult;
 import com.zucc.cbc31401324.ylsh.R;
+import com.zucc.cbc31401324.ylsh.http.HttpUtil;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -38,6 +40,7 @@ public class EditNameActivity extends Activity implements
     private EditText name;
     private GSONError gsonerror;
     private static final int LOGIN_RESULT = 1;
+    @SuppressLint("HandlerLeak")
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -45,6 +48,7 @@ public class EditNameActivity extends Activity implements
                 case LOGIN_RESULT:
                     parseJASONWithGASON((String) msg.obj);
                     if(gsonerror.getError() == null){
+                        LoginResult.user.setUserName(name.getText().toString());
                         Intent intent = new Intent(EditNameActivity.this, PersonalprofileActivity.class);
                         EditNameActivity.this.startActivity(intent);
                     }else {
@@ -75,25 +79,34 @@ public class EditNameActivity extends Activity implements
                 break;
             case R.id.save:
                 //TODO 保存昵称
-                LoginResult loginResult = new LoginResult();
                 final String userName = name.getText().toString();
-                final String userId = loginResult.getUserId();
                 Thread t = new Thread(){
                     @Override
                     public void run() {
-                        String path = "";
+                        String path = HttpUtil.serverPath + "/user/edit";
                         //1.创建客户端对象
                         HttpClient hc = new DefaultHttpClient();
                         //2.创建post请求对象
                         HttpPost hp = new HttpPost(path);
 
                         //封装form表单提交的数据
-                        BasicNameValuePair bnvp = new BasicNameValuePair("userName", userName);
-                        BasicNameValuePair bnvp2 = new BasicNameValuePair("userId", userId);
+                        BasicNameValuePair bnvp = new BasicNameValuePair("userMail", LoginResult.user.getUserMail());
+                        BasicNameValuePair bnvp2 = new BasicNameValuePair("userComDetail", LoginResult.user.getUserComDetail());
+                        BasicNameValuePair bnvp3 = new BasicNameValuePair("userId", LoginResult.user.getUserId());
+                        BasicNameValuePair bnvp4 = new BasicNameValuePair("userName", userName);
+                        BasicNameValuePair bnvp5 = new BasicNameValuePair("userSex", LoginResult.user.getUserSex());
+                        BasicNameValuePair bnvp6 = new BasicNameValuePair("userHeadSrc", LoginResult.user.getUserHeadSrc());
+                        BasicNameValuePair bnvp7 = new BasicNameValuePair("userDetail", LoginResult.user.getUserDetail());
+//                        BasicNameValuePair bnvp2 = new BasicNameValuePair("pass", pass);
                         List<BasicNameValuePair> parameters = new ArrayList<BasicNameValuePair>();
                         //把BasicNameValuePair放入集合中
                         parameters.add(bnvp);
                         parameters.add(bnvp2);
+                        parameters.add(bnvp3);
+                        parameters.add(bnvp4);
+                        parameters.add(bnvp5);
+                        parameters.add(bnvp6);
+                        parameters.add(bnvp7);
 
                         try {
                             //要提交的数据都已经在集合中了，把集合传给实体对象

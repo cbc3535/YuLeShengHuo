@@ -32,8 +32,8 @@ import java.util.UUID;
  */
 
 public class HttpUtil {
-    public static String serverIP = "10.64.128.44";
-    public static String serverPath = "http://" + serverIP + ":8888";
+    public static String serverIP = "10.66.48.5";
+    public static String serverPath = "http://" + serverIP + ":8888/ylsh";
 
     public static JSONObject postMethod(List<BasicNameValuePair> parameters, String path) {
         JSONObject result = null;

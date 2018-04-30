@@ -189,7 +189,7 @@ public class MyFishTogetherActivity extends Activity implements
     private void StorageFT() {
         for (int i = 0; i < checkFishTogethers.size(); i++) {
             cft = checkFishTogethers.get(i);
-            FishTogether site = new FishTogether(1,//TODO 图片
+            FishTogether site = new FishTogether(R.drawable.pic,//TODO 图片
                     cft.getUser().getUserName(),
                     cft.getFtAddTime(), // TODO 计算时间差
                     "100m",
