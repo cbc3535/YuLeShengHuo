@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +49,7 @@ import java.util.List;
  */
 
 public class Fragment_together_Fragment1 extends Fragment {
-    private View mView = null;
+    private FishTogetherAdapter adapter;
     private String error;
     private List<FishTogether> publicfishtogether = new ArrayList<FishTogether>();
     private List<CheckFishTogether> checkFishTogethers = new ArrayList<CheckFishTogether>();
@@ -66,9 +67,7 @@ public class Fragment_together_Fragment1 extends Fragment {
                     } else {
                         Log.d("FTF", "handleMessage: ");
                     }
-                    FishTogetherAdapter adapter = new FishTogetherAdapter(getActivity(), R.layout.myfishtogether, publicfishtogether);
-                    ListView listView = (ListView) mView.findViewById(R.id.list_view1);
-                    listView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
                     //TODO 更新UI
                     break;
             }
@@ -76,8 +75,21 @@ public class Fragment_together_Fragment1 extends Fragment {
     };
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.publicfishtogether_listview, container, false);
+        View mView = inflater.inflate(R.layout.publicfishtogether_listview, container, false);
+        ListView listView = (ListView) mView.findViewById(R.id.list_view1);
+        adapter = new FishTogetherAdapter(getActivity(), R.layout.myfishtogether, publicfishtogether);
+        listView.setAdapter(adapter);
         init();
+        final SwipeRefreshLayout swipeRefreshLayout= (SwipeRefreshLayout) mView.findViewById(R.id.srl);
+        //setColorSchemeResources()可以改变加载图标的颜色。
+        swipeRefreshLayout.setColorSchemeResources(new int[]{R.color.colorAccent, R.color.colorPrimary});
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(false);
+                init();
+            }
+        });
         return mView;
 
     }
@@ -136,6 +148,7 @@ public class Fragment_together_Fragment1 extends Fragment {
             JSONObject result = new JSONObject(text);
             error = result.getString("error");
             JSONArray resultList = result.getJSONArray("fishTogethers");
+            checkFishTogethers.clear();
             for (int i = 0; i < resultList.length(); i++) {
                 JSONObject jsonObject = (JSONObject) resultList.get(i);
                 CheckFishTogether checkFishTogether = new CheckFishTogether();
@@ -154,13 +167,10 @@ public class Fragment_together_Fragment1 extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//        List<CheckFishTogether> checkFishTogethers = gson.fromJson(text, new TypeToken<List<CheckFishTogether>>() {
-//        }.getType());
-//        this.checkFishTogethers.addAll(checkFishTogethers);
-        Log.i("cws", checkFishTogethers.toString());
     }
 
     private void StorageFT() {
+        publicfishtogether.clear();
         for (int i = 0; i < checkFishTogethers.size(); i++) {
             cft = checkFishTogethers.get(i);
             FishTogether site = new FishTogether(R.drawable.pic,//TODO 图片

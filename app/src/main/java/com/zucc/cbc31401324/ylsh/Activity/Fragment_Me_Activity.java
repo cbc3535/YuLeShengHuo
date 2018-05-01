@@ -32,6 +32,7 @@ public class Fragment_Me_Activity extends Fragment implements View.OnClickListen
     private Button user_sex;
     private CircleImageView circleImageView;
     private static final int PERSONALPROFILE_RESULT = 1;
+    @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -59,9 +60,7 @@ public class Fragment_Me_Activity extends Fragment implements View.OnClickListen
         new Thread(new Runnable() {
             @Override
             public void run() {
-//              result = myhttp(username , userid);
                 LoginResult loginresult = new LoginResult();
-                // TODO 2.4.3暂时没找到
                 Message message = new Message();
                 message.what = PERSONALPROFILE_RESULT;
                 message.obj = loginresult;
@@ -81,16 +80,12 @@ public class Fragment_Me_Activity extends Fragment implements View.OnClickListen
         if (LoginResult.user.getUserName() != null) {
             user_name.setText(LoginResult.user.getUserName());
         }
-        //TODO 需要知道性别返回值
         if (LoginResult.user.getUserSex() != null) {
             if (LoginResult.user.getUserSex().equals("男"))
                 user_sex.setBackgroundResource(R.drawable.sex_men);
             else
                 user_sex.setBackgroundResource(R.drawable.sex_women);
         }
-//        else {
-//            Toast.makeText(getApplicationContext(),"登录失败",Toast.LENGTH_LONG).show();
-//        }
     }
 
     @Override
@@ -98,7 +93,7 @@ public class Fragment_Me_Activity extends Fragment implements View.OnClickListen
         switch (view.getId()) {
             case R.id.personal:
                 Intent intent = new Intent(getActivity(), PersonalprofileActivity.class);
-                Fragment_Me_Activity.this.startActivity(intent);
+                Fragment_Me_Activity.this.startActivityForResult(intent,1);
                 break;
             case R.id.myfishsite:
                 Intent intent2 = new Intent(getActivity(), MyFishSiteActivity.class);
@@ -117,5 +112,15 @@ public class Fragment_Me_Activity extends Fragment implements View.OnClickListen
 
         }
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode){
+            case 5:
+               login();
+               break;
+               default:
+        }
     }
 }

@@ -48,11 +48,10 @@ public class EditContactInfoActivity extends Activity implements
             switch (msg.what){
                 case LOGIN_RESULT:
                     parseJASONWithGASON((String) msg.obj);
-                    if(gsonerror.getError() == null){
+                    if(gsonerror == null || "".equals(gsonerror.getError())){
                         LoginResult.user.setUserMail(et_Emailaddr.getText().toString());
                         LoginResult.user.setUserComDetail(et_OtherName.getText().toString());
-                        Intent intent = new Intent(EditContactInfoActivity.this, PersonalprofileActivity.class);
-                        EditContactInfoActivity.this.startActivity(intent);
+                        Toast.makeText(EditContactInfoActivity.this,"保存成功",Toast.LENGTH_SHORT).show();
                     }else {
                         Log.d("EditNameActivity", "handleMessage: "+gsonerror.getError());
                     }
@@ -71,7 +70,9 @@ public class EditContactInfoActivity extends Activity implements
         TextView tv1 = (TextView)findViewById(R.id.save);
         btn1.setOnClickListener(this);
         tv1.setOnClickListener(this);
-
+        et_Emailaddr.setText(LoginResult.user.getUserMail());
+        et_OtherName.setText(LoginResult.user.getUserName());
+        et_phonenumber.setText("暂不可修改");
     }
 
     @Override
@@ -79,6 +80,7 @@ public class EditContactInfoActivity extends Activity implements
 
         switch (view.getId()) {
             case R.id.set_back:
+                setResult(1);
                 finish();
                 break;
             case R.id.save:

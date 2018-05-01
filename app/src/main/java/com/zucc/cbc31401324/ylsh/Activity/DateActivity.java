@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.zucc.cbc31401324.ylsh.Bin.GSONError;
@@ -56,13 +57,13 @@ public class DateActivity extends Activity implements
                 case LOGIN_RESULT:
                     if (gsonerror == null) {
                         parseJASONWithGASON((String) msg.obj);
+                        Toast.makeText(DateActivity.this,"保存成功",Toast.LENGTH_SHORT).show();
                     } else {
                         Log.d("DateActivity", "handleMessage: ");
                     }
                     if(gsonerror.isEmpty()){
                         // TODO
                     }
-                    //TODO 更新UI
                     break;
             }
         }

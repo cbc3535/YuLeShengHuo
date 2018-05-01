@@ -47,10 +47,9 @@ public class EditNameActivity extends Activity implements
             switch (msg.what){
                 case LOGIN_RESULT:
                     parseJASONWithGASON((String) msg.obj);
-                    if(gsonerror.getError() == null){
+                    if(gsonerror == null || "".equals(gsonerror.getError())){
                         LoginResult.user.setUserName(name.getText().toString());
-                        Intent intent = new Intent(EditNameActivity.this, PersonalprofileActivity.class);
-                        EditNameActivity.this.startActivity(intent);
+                        Toast.makeText(EditNameActivity.this,"保存成功",Toast.LENGTH_SHORT).show();
                     }else {
                         Log.d("EditNameActivity", "handleMessage: "+gsonerror.getError());
                     }
@@ -67,6 +66,7 @@ public class EditNameActivity extends Activity implements
         TextView tv1 = (TextView)findViewById(R.id.save);
         btn1.setOnClickListener(this);
         tv1.setOnClickListener(this);
+        name.setText(LoginResult.user.getUserName());
 
     }
 
@@ -75,6 +75,7 @@ public class EditNameActivity extends Activity implements
 
         switch (view.getId()) {
             case R.id.set_back:
+                setResult(1);
                 finish();
                 break;
             case R.id.save:

@@ -105,21 +105,22 @@ public class PersonalprofileActivity extends Activity implements
                 break;
             case R.id.name_more:
                 Intent intent1 = new Intent(PersonalprofileActivity.this, EditNameActivity.class);
-                PersonalprofileActivity.this.startActivity(intent1);
+                PersonalprofileActivity.this.startActivityForResult(intent1,1);
                 break;
             case R.id.sex_more:
                 Intent intent2 = new Intent(PersonalprofileActivity.this, EditSexActivity.class);
-                PersonalprofileActivity.this.startActivity(intent2);
+                PersonalprofileActivity.this.startActivityForResult(intent2,2);
                 break;
             case R.id.profile_more:
                 Intent intent3 = new Intent(PersonalprofileActivity.this, EditProfileActivity.class);
-                PersonalprofileActivity.this.startActivity(intent3);
+                PersonalprofileActivity.this.startActivityForResult(intent3,3);
                 break;
             case R.id.contactinfo_more:
                 Intent intent4 = new Intent(PersonalprofileActivity.this, EditContactInfoActivity.class);
-                PersonalprofileActivity.this.startActivity(intent4);
+                PersonalprofileActivity.this.startActivityForResult(intent4,4);
                 break;
             case R.id.set_back:
+                setResult(5);
                 finish();
                 break;
             default:
@@ -131,8 +132,27 @@ public class PersonalprofileActivity extends Activity implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 0 && resultCode == 0) {
-            circleImageView.setImageURI(Uri.fromFile((File) data.getExtras().get("0")));
+        switch (requestCode){
+            case 0:
+                if(resultCode == 0){
+                    circleImageView.setImageURI(Uri.fromFile((File) data.getExtras().get("0")));
+                }
+                break;
+            default:
+                if (resultCode == 1) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            LoginResult loginresult = new LoginResult();
+                            Message message = new Message();
+                            message.what = PERSONALPROFILE_RESULT;
+                            message.obj = loginresult;
+                            handler.sendMessage(message);
+                        }
+                    }).run();
+                }
+                break;
+
         }
     }
 

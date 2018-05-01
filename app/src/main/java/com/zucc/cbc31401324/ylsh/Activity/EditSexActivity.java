@@ -47,13 +47,13 @@ public class EditSexActivity extends Activity implements
             switch (msg.what){
                 case LOGIN_RESULT:
                     parseJASONWithGASON((String) msg.obj);
-                    if(gsonerror.getError() == null){
+                    if(gsonerror == null || "".equals(gsonerror.getError())){
                         LoginResult.user.setUserSex(sex.getText().toString());
-                        Intent intent = new Intent(EditSexActivity.this, PersonalprofileActivity.class);
-                        EditSexActivity.this.startActivity(intent);
+                        Toast.makeText(EditSexActivity.this,"保存成功",Toast.LENGTH_SHORT).show();
                     }else {
                         Log.d("EditSexActivity", "handleMessage: "+gsonerror.getError());
                     }
+
                     break;
             }
         }
@@ -67,6 +67,7 @@ public class EditSexActivity extends Activity implements
         TextView tv1 = (TextView)findViewById(R.id.save);
         btn1.setOnClickListener(this);
         tv1.setOnClickListener(this);
+        sex.setText(LoginResult.user.getUserSex());
 
     }
 
@@ -75,10 +76,10 @@ public class EditSexActivity extends Activity implements
 
         switch (view.getId()) {
             case R.id.set_back:
+                setResult(1);
                 finish();
                 break;
             case R.id.save:
-                //TODO 保存性别 如果男性用drawable.sex_men女性.sex_women
                 LoginResult loginResult =new LoginResult();
                 final String userSex = sex.getText().toString();
                 final String userId = loginResult.getUserId();

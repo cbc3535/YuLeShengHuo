@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -42,8 +43,9 @@ import java.util.List;
 
 public class MyFishTogetherActivity extends Activity implements
         android.view.View.OnClickListener {
+    private FishTogetherAdapter adapter;
     private String error;
-    private List<FishTogether> fishtogether = new ArrayList<FishTogether>();
+    private List<FishTogether> publicfishtogether = new ArrayList<FishTogether>();
     private List<CheckFishTogether> checkFishTogethers = new ArrayList<CheckFishTogether>();
     private static final int LOGIN_RESULT = 1;
     private CheckFishTogether cft = new CheckFishTogether();
@@ -56,12 +58,11 @@ public class MyFishTogetherActivity extends Activity implements
                     parseJASONWithGASON((String) msg.obj);
                     if (error.isEmpty()) {
                         StorageFT();
-                        FishTogetherAdapter adapter = new FishTogetherAdapter(MyFishTogetherActivity.this, R.layout.myfishtogether, fishtogether);
-                        ListView listView = (ListView) findViewById(R.id.list_view1);
-                        listView.setAdapter(adapter);
                     } else {
                         Log.d("FTF", "handleMessage: ");
                     }
+                    adapter.notifyDataSetChanged();
+                    //TODO 更新UI
                     break;
             }
         }
@@ -73,9 +74,20 @@ public class MyFishTogetherActivity extends Activity implements
         setContentView(R.layout.myfishtogether_listview);
         Button btn1 = (Button) findViewById(R.id.button3);
         btn1.setOnClickListener(this);
+        adapter = new FishTogetherAdapter(MyFishTogetherActivity.this, R.layout.myfishtogether, publicfishtogether);
+        ListView listView = (ListView) findViewById(R.id.list_view1);
+        listView.setAdapter(adapter);
         init();
-
-        //TODO 我的约钓
+        final SwipeRefreshLayout swipeRefreshLayout= (SwipeRefreshLayout) findViewById(R.id.mysrl);
+        //setColorSchemeResources()可以改变加载图标的颜色。
+        swipeRefreshLayout.setColorSchemeResources(new int[]{R.color.colorAccent, R.color.colorPrimary});
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(false);
+                init();
+            }
+        });
     }
 
     private void init() {
@@ -121,36 +133,10 @@ public class MyFishTogetherActivity extends Activity implements
 //                "2017-11-4 星期六",
 //                "浙江大学城市学院内河");
 //        fishtogether.add(site);
-//        FishTogether site1 = new FishTogether(R.drawable.pic,
-//                "cbc",
-//                "10分钟前",
-//                "1000m",
-//                "一起去钓鱼啊？",
-//                "2017-12-14 星期六",
-//                "浙江大学城市学院");
-//        fishtogether.add(site1);
-//        FishTogether site2 = new FishTogether(R.drawable.pic,
-//                "cbc",
-//                "10分钟前",
-//                "1000m",
-//                "一起去钓鱼啊？",
-//                "2017-12-14 星期六",
-//                "浙江大学城市学院");
-//        fishtogether.add(site2);
-//        FishTogether site3 = new FishTogether(R.drawable.pic,
-//                "cbc",
-//                "10分钟前",
-//                "1000m",
-//                "一起去钓鱼啊？",
-//                "2017-12-14 星期六",
-//                "浙江大学城市学院");
-//        fishtogether.add(site3);
-
     }
 
     @Override
     public void onClick(View view) {
-
         switch (view.getId()) {
             case R.id.button3:
                 finish();
@@ -166,6 +152,7 @@ public class MyFishTogetherActivity extends Activity implements
             JSONObject result = new JSONObject(text);
             error = result.getString("error");
             JSONArray resultList = result.getJSONArray("fishTogethers");
+            checkFishTogethers.clear();
             for (int i = 0; i < resultList.length(); i++) {
                 JSONObject jsonObject = (JSONObject) resultList.get(i);
                 CheckFishTogether checkFishTogether = new CheckFishTogether();
@@ -187,6 +174,7 @@ public class MyFishTogetherActivity extends Activity implements
     }
 
     private void StorageFT() {
+        publicfishtogether.clear();
         for (int i = 0; i < checkFishTogethers.size(); i++) {
             cft = checkFishTogethers.get(i);
             FishTogether site = new FishTogether(R.drawable.pic,//TODO 图片
@@ -196,7 +184,7 @@ public class MyFishTogetherActivity extends Activity implements
                     cft.getFtDetail(),
                     cft.getFtTime(),
                     cft.getFpName());
-            fishtogether.add(site);
+            publicfishtogether.add(site);
         }
     }
 }

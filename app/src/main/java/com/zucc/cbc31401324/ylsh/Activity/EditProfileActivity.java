@@ -47,12 +47,11 @@ public class EditProfileActivity extends Activity implements
             switch (msg.what){
                 case LOGIN_RESULT:
                     parseJASONWithGASON((String) msg.obj);
-                    if(gsonerror.getError() == null){
+                    if (gsonerror == null || "".equals(gsonerror.getError())) {
                         LoginResult.user.setUserDetail(profile.getText().toString());
-                        Intent intent = new Intent(EditProfileActivity.this, PersonalprofileActivity.class);
-                        EditProfileActivity.this.startActivity(intent);
-                    }else {
-                        Log.d("EditSexActivity", "handleMessage: "+gsonerror.getError());
+                        Toast.makeText(EditProfileActivity.this,"保存成功",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.d("EditProfileActivity", "handleMessage: " + gsonerror.getError());
                     }
                     break;
             }
@@ -67,6 +66,7 @@ public class EditProfileActivity extends Activity implements
         TextView tv1 = (TextView)findViewById(R.id.save);
         btn1.setOnClickListener(this);
         tv1.setOnClickListener(this);
+        profile.setText(LoginResult.user.getUserDetail());
 
     }
 
