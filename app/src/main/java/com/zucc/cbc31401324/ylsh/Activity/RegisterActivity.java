@@ -1,5 +1,6 @@
 package com.zucc.cbc31401324.ylsh.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.zucc.cbc31401324.ylsh.Bin.GSONError;
 import com.zucc.cbc31401324.ylsh.R;
+import com.zucc.cbc31401324.ylsh.http.HttpUtil;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -51,6 +53,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
     private boolean flag=true;
     private GSONError gsonerror;
     private static final int LOGIN_RESULT = 1;
+    @SuppressLint("HandlerLeak")
     private Handler handler1 = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -98,6 +101,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
     /**
      * 使用Handler来分发Message对象到主线程中，处理事件
      */
+    @SuppressLint("HandlerLeak")
     Handler handler=new Handler()
     {
         @Override
@@ -182,15 +186,15 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                 Thread t = new Thread(){
                     @Override
                     public void run() {
-                        String path = "";
+                        String path = HttpUtil.serverPath + "/user/register";
                         //1.创建客户端对象
                         HttpClient hc = new DefaultHttpClient();
                         //2.创建post请求对象
                         HttpPost hp = new HttpPost(path);
 
                         //封装form表单提交的数据
-                        BasicNameValuePair bnvp = new BasicNameValuePair("name", phone);
-                        BasicNameValuePair bnvp2 = new BasicNameValuePair("pass", pass);
+                        BasicNameValuePair bnvp = new BasicNameValuePair("userPhone", phone);
+                        BasicNameValuePair bnvp2 = new BasicNameValuePair("userPwd", pass);
                         List<BasicNameValuePair> parameters = new ArrayList<BasicNameValuePair>();
                         //把BasicNameValuePair放入集合中
                         parameters.add(bnvp);

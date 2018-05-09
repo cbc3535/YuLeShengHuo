@@ -246,7 +246,6 @@ public class UpDataActivity extends Activity implements View.OnClickListener {
                     Toast.makeText(this, "请确定位置", Toast.LENGTH_SHORT).show();
                 }
                 LoginResult loginResult = new LoginResult();
-                //TODO 需要把收费类型 钓法 钓点类型改为String
                 final String fpName = TitleEdit.getMyRightTextView().getText().toString();
                 final String fpIsNotFree = TitleEdit1.getMyRightTextView().getText()
                         .toString();

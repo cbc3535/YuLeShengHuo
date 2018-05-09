@@ -96,7 +96,6 @@ public class Fragment_together_Fragment1 extends Fragment {
 
     private void init() {
         //TODO 约钓 最新发布
-        // 我—>我的消息—>我发起的
         //发送消息，让主线程刷新ui显示text
         new Thread() {
             @Override
@@ -147,7 +146,7 @@ public class Fragment_together_Fragment1 extends Fragment {
         try {
             JSONObject result = new JSONObject(text);
             error = result.getString("error");
-            JSONArray resultList = result.getJSONArray("fishTogethers");
+            JSONArray resultList = result.getJSONArray("fishTogether");
             checkFishTogethers.clear();
             for (int i = 0; i < resultList.length(); i++) {
                 JSONObject jsonObject = (JSONObject) resultList.get(i);
@@ -157,11 +156,12 @@ public class Fragment_together_Fragment1 extends Fragment {
                 checkFishTogether.setFtDetail(jsonObject.getString("ftDetail"));
                 checkFishTogether.setFtId(jsonObject.getInt("ftId"));
                 checkFishTogether.setFtTime(jsonObject.getString("ftTime"));
-                JSONObject userObject = jsonObject.getJSONObject("user");
-                FishTogetherCreateUser fishTogetherCreateUser = new FishTogetherCreateUser();
-                fishTogetherCreateUser.setUserHeadSrc(userObject.getString("userHeadSrc"));
-                fishTogetherCreateUser.setUserName(userObject.getString("userName"));
-                checkFishTogether.setUser(fishTogetherCreateUser);
+                checkFishTogether.setUserName(jsonObject.getString("userName"));
+//                JSONObject userObject = jsonObject.getJSONObject("user");
+//                FishTogetherCreateUser fishTogetherCreateUser = new FishTogetherCreateUser();
+//                fishTogetherCreateUser.setUserHeadSrc(userObject.getString("userHeadSrc"));
+//                fishTogetherCreateUser.setUserName(userObject.getString("userName"));
+//                checkFishTogether.setUser(fishTogetherCreateUser);
                 checkFishTogethers.add(checkFishTogether);
             }
         } catch (JSONException e) {
@@ -174,7 +174,7 @@ public class Fragment_together_Fragment1 extends Fragment {
         for (int i = 0; i < checkFishTogethers.size(); i++) {
             cft = checkFishTogethers.get(i);
             FishTogether site = new FishTogether(R.drawable.pic,//TODO 图片
-                    cft.getUser().getUserName(),
+                    cft.getUserName(),
                     cft.getFtAddTime(), // TODO 计算时间差
                     "100m",
                     cft.getFtDetail(),

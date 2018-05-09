@@ -300,29 +300,6 @@ public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnC
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-//                        String path = "";
-//                        //1.创建客户端对象
-//                        HttpClient hc = new DefaultHttpClient();
-//                        //2.创建post请求对象
-//                        HttpPost hp = new HttpPost(path);
-//                        //TODO 如何将File类型数据放到List里面
-//                        //封装form表单提交的数据
-//                        BasicNameValuePair bnvp = new BasicNameValuePair("userHeadSrc", "pathpic");
-//                        List<BasicNameValuePair> parameters = new ArrayList<BasicNameValuePair>();
-//                        //把BasicNameValuePair放入集合中
-//                        parameters.add(bnvp);
-//                        try {
-//                            //要提交的数据都已经在集合中了，把集合传给实体对象
-//                            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(parameters, "utf-8");
-//                            //设置post请求对象的实体，其实就是把要提交的数据封装至post请求的输出流中
-//                            hp.setEntity(entity);
-//                            //3.使用客户端发送post请求
-//                            HttpResponse hr = hc.execute(hp);
-//                            if (hr.getStatusLine().getStatusCode() == 200) {
-//                                InputStream is = hr.getEntity().getContent();
-//                                String text = Utils.getTextFromStream(is);
-//
-//                        //发送消息，让主线程刷新ui显示text
                         Message msg = handler.obtainMessage();
                         msg.what = LOGIN_RESULT;
                         msg.obj = code;

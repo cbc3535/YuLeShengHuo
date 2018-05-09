@@ -17,6 +17,16 @@ public class CheckFishTogether {
     private Integer ftId; // 约钓ID
     private String ftTime; // 约钓开始时间
     private String ftDetail; // 约钓名称
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    private String userName;
     private FishTogetherCreateUser user; // 约钓发起者的信息
 
     public String getFpName() {
@@ -67,6 +77,18 @@ public class CheckFishTogether {
         this.user = user;
     }
 
+//    @Override
+//    public String toString() {
+//        return "CheckFishTogether{" +
+//                "fpName='" + fpName + '\'' +
+//                ", ftAddTime='" + ftAddTime + '\'' +
+//                ", ftId=" + ftId +
+//                ", ftTime='" + ftTime + '\'' +
+//                ", ftDetail='" + ftDetail + '\'' +
+//                ", user=" + user +
+//                '}';
+//    }
+
     @Override
     public String toString() {
         return "CheckFishTogether{" +
@@ -75,6 +97,7 @@ public class CheckFishTogether {
                 ", ftId=" + ftId +
                 ", ftTime='" + ftTime + '\'' +
                 ", ftDetail='" + ftDetail + '\'' +
+                ", userName='" + userName + '\'' +
                 ", user=" + user +
                 '}';
     }

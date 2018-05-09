@@ -2,6 +2,7 @@ package com.zucc.cbc31401324.ylsh.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -56,11 +58,11 @@ public class MyFishTogetherActivity extends Activity implements
             switch (msg.what) {
                 case LOGIN_RESULT:
                     parseJASONWithGASON((String) msg.obj);
-                    if (error.isEmpty()) {
+//                    if (error.isEmpty()) {
                         StorageFT();
-                    } else {
-                        Log.d("FTF", "handleMessage: ");
-                    }
+//                    } else {
+//                        Log.d("FTF", "handleMessage: ");
+//                    }
                     adapter.notifyDataSetChanged();
                     //TODO 更新UI
                     break;
@@ -79,7 +81,6 @@ public class MyFishTogetherActivity extends Activity implements
         listView.setAdapter(adapter);
         init();
         final SwipeRefreshLayout swipeRefreshLayout= (SwipeRefreshLayout) findViewById(R.id.mysrl);
-        //setColorSchemeResources()可以改变加载图标的颜色。
         swipeRefreshLayout.setColorSchemeResources(new int[]{R.color.colorAccent, R.color.colorPrimary});
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -125,14 +126,6 @@ public class MyFishTogetherActivity extends Activity implements
                 }
             }
         }.start();
-//        FishTogether site = new FishTogether(R.drawable.pic,
-//                "cya",
-//                "1分钟前",
-//                "100m",
-//                "有没有人一起去钓鱼啊？",
-//                "2017-11-4 星期六",
-//                "浙江大学城市学院内河");
-//        fishtogether.add(site);
     }
 
     @Override
@@ -150,8 +143,8 @@ public class MyFishTogetherActivity extends Activity implements
     private void parseJASONWithGASON(String text) {
         try {
             JSONObject result = new JSONObject(text);
-            error = result.getString("error");
-            JSONArray resultList = result.getJSONArray("fishTogethers");
+//            error = result.getString("error");
+            JSONArray resultList = result.getJSONArray("fishTogether");
             checkFishTogethers.clear();
             for (int i = 0; i < resultList.length(); i++) {
                 JSONObject jsonObject = (JSONObject) resultList.get(i);
@@ -161,11 +154,12 @@ public class MyFishTogetherActivity extends Activity implements
                 checkFishTogether.setFtDetail(jsonObject.getString("ftDetail"));
                 checkFishTogether.setFtId(jsonObject.getInt("ftId"));
                 checkFishTogether.setFtTime(jsonObject.getString("ftTime"));
-                JSONObject userObject = jsonObject.getJSONObject("user");
-                FishTogetherCreateUser fishTogetherCreateUser = new FishTogetherCreateUser();
-                fishTogetherCreateUser.setUserHeadSrc(userObject.getString("userHeadSrc"));
-                fishTogetherCreateUser.setUserName(userObject.getString("userName"));
-                checkFishTogether.setUser(fishTogetherCreateUser);
+                checkFishTogether.setUserName(jsonObject.getString("userName"));
+//                JSONObject userObject = jsonObject.getJSONObject("user");
+//                FishTogetherCreateUser fishTogetherCreateUser = new FishTogetherCreateUser();
+//                fishTogetherCreateUser.setUserHeadSrc(userObject.getString("userHeadSrc"));
+//                fishTogetherCreateUser.setUserName(userObject.getString("userName"));
+//                checkFishTogether.setUser(fishTogetherCreateUser);
                 checkFishTogethers.add(checkFishTogether);
             }
         } catch (JSONException e) {
@@ -178,7 +172,7 @@ public class MyFishTogetherActivity extends Activity implements
         for (int i = 0; i < checkFishTogethers.size(); i++) {
             cft = checkFishTogethers.get(i);
             FishTogether site = new FishTogether(R.drawable.pic,//TODO 图片
-                    cft.getUser().getUserName(),
+                    cft.getUserName(),
                     cft.getFtAddTime(), // TODO 计算时间差
                     "100m",
                     cft.getFtDetail(),
@@ -187,4 +181,5 @@ public class MyFishTogetherActivity extends Activity implements
             publicfishtogether.add(site);
         }
     }
+
 }

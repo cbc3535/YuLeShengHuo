@@ -108,6 +108,7 @@ public class DateActivity extends Activity implements
                 final String ftTime = time.getText().toString();
                 final String ftDetail = info.getText().toString();
                 final String fpName = addr.getText().toString();
+                final String userName = LoginResult.user.getUserName();
 //                final String userHeadSrc = loginResult.getUserHeadSrc();
                 final String userId = LoginResult.user.getUserId();
                 Thread t = new Thread() {
@@ -124,12 +125,14 @@ public class DateActivity extends Activity implements
                         BasicNameValuePair bnvp = new BasicNameValuePair("ftTime", ftTime);
                         BasicNameValuePair bnvp2 = new BasicNameValuePair("fpName", fpName);
                         BasicNameValuePair bnvp4 = new BasicNameValuePair("ftDetail", ftDetail);
+                        BasicNameValuePair bnvp5 = new BasicNameValuePair("userName", userName);
                         List<BasicNameValuePair> parameters = new ArrayList<BasicNameValuePair>();
                         //把BasicNameValuePair放入集合中
                         parameters.add(bnvp);
                         parameters.add(bnvp2);
                         parameters.add(bnvp3);
                         parameters.add(bnvp4);
+                        parameters.add(bnvp5);
                         try {
                             //要提交的数据都已经在集合中了，把集合传给实体对象
                             UrlEncodedFormEntity entity = new UrlEncodedFormEntity(parameters, "utf-8");
