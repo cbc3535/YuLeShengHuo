@@ -128,9 +128,7 @@ public class Fragment_Map_Activity extends Fragment implements View.OnClickListe
                 result3 = markerinfo.getSite_type();
                 result4 = markerinfo.getSite_mode();
                 result5 = markerinfo.getSite_info();
-
                 mMarkerLy.setVisibility(View.VISIBLE);
-//                Toast.makeText(getActivity(), "Marker被点击了！", Toast.LENGTH_SHORT).show();
                 return true;
             }
         });

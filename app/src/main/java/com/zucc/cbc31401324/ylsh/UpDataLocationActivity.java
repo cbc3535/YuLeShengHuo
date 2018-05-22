@@ -254,15 +254,6 @@ public class UpDataLocationActivity extends Activity implements
      */
     @Override
     public void onMapLoaded() {
-        // BitmapDescriptor bitmap;
-        // bitmap =
-        // BitmapDescriptorFactory.fromResource(R.drawable.icon_marker);
-        //
-        // MarkerOptions options = new MarkerOptions().position(new LatLng(0,
-        // 0))
-        // .icon(bitmap).zIndex(9).anchor(0.5f, 0.5f);
-        // marker = (Marker) (mBaiduMap.addOverlay(options));
-        // marker.setFlat(true);
 
     }
 

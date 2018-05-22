@@ -48,7 +48,12 @@
         <activity android:name=".Activity.MyFishSiteActivity" />
         <activity android:name=".Activity.MyMessageActivity" />
         <activity android:name=".Activity.MyFishTogetherActivity" />
-        <activity android:name=".Activity.ChangeHeadPicActivity" />
+        <activity android:name=".Activity.ChangeHeadPicActivity" >
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+            <!--</intent-filter>-->
+        </activity>
         <activity android:name=".Activity.UpDataActivity" />
         <activity android:name=".UpDataLocationActivity" />
         <activity android:name=".Activity.SearchActivity" />

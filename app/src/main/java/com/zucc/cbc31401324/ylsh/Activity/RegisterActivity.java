@@ -110,17 +110,17 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
             int event=msg.arg1;
             int result=msg.arg2;
             Object data=msg.obj;
-            if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
-                if(result == SMSSDK.RESULT_COMPLETE) {
-                    boolean smart = (Boolean)data;
-                    if(smart) {
-                        Toast.makeText(getApplicationContext(),"该手机号已经注册过，请重新输入",
-                                Toast.LENGTH_LONG).show();
-                        edit_phone.requestFocus();
-                        return;
-                    }
-                }
-            }
+//            if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
+//                if(result == SMSSDK.RESULT_COMPLETE) {
+//                    boolean smart = (Boolean)data;
+//                    if(smart) {
+//                        Toast.makeText(getApplicationContext(),"该手机号已经注册过，请重新输入",
+//                                Toast.LENGTH_LONG).show();
+//                        edit_phone.requestFocus();
+//                        return;
+//                    }
+//                }
+//            }
             if(result==SMSSDK.RESULT_COMPLETE)
             {
 

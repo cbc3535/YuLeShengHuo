@@ -47,12 +47,12 @@ public class LoginActivity extends Activity implements
             switch (msg.what){
                 case LOGIN_RESULT:
                     parseJASONWithGASON((String) msg.obj);
-                    if (LoginResult.user.getError().isEmpty()) {
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        LoginActivity.this.startActivity(intent);
+                    if (LoginResult.user.getUserId() == null) {
+                        Toast.makeText(getApplicationContext(),"登录失败",Toast.LENGTH_LONG).show();
                     }
                     else {
-                        Toast.makeText(getApplicationContext(),"登录失败",Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        LoginActivity.this.startActivity(intent);
                     }
                     break;
             }

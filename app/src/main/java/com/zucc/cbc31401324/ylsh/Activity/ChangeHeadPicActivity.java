@@ -1,56 +1,34 @@
 package com.zucc.cbc31401324.ylsh.Activity;
 
-import android.annotation.SuppressLint;
+import android.Manifest;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
 import android.os.StrictMode;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.ArrayMap;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.zucc.cbc31401324.ylsh.Bin.FormFile;
-import com.zucc.cbc31401324.ylsh.Bin.GSONError;
-import com.zucc.cbc31401324.ylsh.Bin.LoginResult;
 import com.zucc.cbc31401324.ylsh.BuildConfig;
-import com.zucc.cbc31401324.ylsh.CachePathUtil;
 import com.zucc.cbc31401324.ylsh.FileUtils;
 import com.zucc.cbc31401324.ylsh.R;
-import com.zucc.cbc31401324.ylsh.http.HttpUtil;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -58,41 +36,19 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by chenbaichang on 2018/3/11.
  */
 
-public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnClickListener {
+public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnClickListener{
     private CircleImageView circleImageView;
     private File mTmpFile;
     private File mCropImageFile;
-    private String pathpic;
     private static final int REQUEST_CAMERA = 100;
     private static final int REQUEST_GALLERY = 101;
     private static final int REQUEST_CROP = 102;
-    private GSONError gsonerror;
-    private static final int LOGIN_RESULT = 1;
-    @SuppressLint("HandlerLeak")
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            int code = (int) msg.obj;
-            switch (msg.what) {
-                case LOGIN_RESULT:
-                    if (200 == code) {
-                        //TODO 更新UI
-                        LoginResult.user.setUserHeadSrc(LoginResult.user.getUserId() + ".jpg");
-                        Log.i("cws:", LoginResult.user.getUserHeadSrc());
-                    } else {
-                        // TODO 失败 报错
-                        Log.d("ChangeHeadPicActivity", "handleMessage: ");
-                    }
-                    break;
-            }
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.change_headpic);
-        circleImageView = (CircleImageView) findViewById(R.id.circleImage);
+        circleImageView = (CircleImageView)findViewById(R.id.circleImage);
         circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,16 +62,15 @@ public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnC
         builder.detectFileUriExposure();
     }
 
-    private void setupDialog() {
-        //show window
+    private void setupDialog(){
         final String[] items = {"拍照", "相册"};
         AlertDialog.Builder listDialog = new AlertDialog.Builder(ChangeHeadPicActivity.this);
         listDialog.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (i == 0) {
-                    camera();
-                } else if (i == 1) {
+                if (i == 0){
+                    checkPermission();
+                }else if (i == 1){
                     gallery();
                 }
             }
@@ -123,62 +78,77 @@ public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnC
         listDialog.show();
     }
 
-    private void gallery() {
+    private void gallery(){
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, REQUEST_GALLERY);
     }
 
-    private void camera() {
+    private void camera(){
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (cameraIntent.resolveActivity(getPackageManager()) != null) {
             mTmpFile = new File(FileUtils.createRootPath(getBaseContext()) + "/" + System.currentTimeMillis() + ".jpg");
             FileUtils.createFile(mTmpFile);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                         FileProvider.getUriForFile(getBaseContext(), BuildConfig.APPLICATION_ID + ".provider", mTmpFile));
-            } else {
+            }else {
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mTmpFile));
             }
             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mTmpFile));
             startActivityForResult(cameraIntent, REQUEST_CAMERA);
         }
     }
+    /**
+     * 检查拍照权限
+     */
+    private void checkPermission() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            int checkCallPhonePermission = ContextCompat.checkSelfPermission(ChangeHeadPicActivity.this, Manifest.permission.CAMERA);
+            if(checkCallPhonePermission != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(ChangeHeadPicActivity.this,new String[]{Manifest.permission.CAMERA},222);
+                return;
+            }else{
+                camera();//调用具体方法
+            }
+        } else {
+            camera();//调用具体方法
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
+        switch (requestCode){
             case REQUEST_CAMERA:
-                if (resultCode == RESULT_OK) {
+                if (resultCode == RESULT_OK){
                     crop(mTmpFile.getAbsolutePath());
-                } else {
+                }else {
                     Toast.makeText(this, "拍照失败", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
             case REQUEST_CROP:
-                if (resultCode == RESULT_OK) {
-                    //更换图片
+                if (resultCode == RESULT_OK){
                     circleImageView.setImageURI(Uri.fromFile(mCropImageFile));
-                    Log.i("cws", Uri.fromFile(mCropImageFile).getPath());
-                } else {
+                }else {
                     Toast.makeText(this, "截图失败", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
             case REQUEST_GALLERY:
-                if (resultCode == RESULT_OK && data != null) {
+                if (resultCode == RESULT_OK && data != null){
                     String imagePath = handleImage(data);
                     crop(imagePath);
-                } else {
+                }else {
                     Toast.makeText(this, "打开图库失败", Toast.LENGTH_SHORT).show();
                 }
                 break;
+
         }
     }
 
-    private void crop(String imagePath) {
+    private void crop(String imagePath){
         //mCropImageFile = FileUtils.createTmpFile(getBaseContext());
         mCropImageFile = getmCropImageFile();
         Intent intent = new Intent("com.android.camera.action.CROP");
@@ -197,7 +167,7 @@ public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnC
     }
 
     //把fileUri转换成ContentUri
-    public Uri getImageContentUri(File imageFile) {
+    public Uri getImageContentUri(File imageFile){
         String filePath = imageFile.getAbsolutePath();
         Cursor cursor = getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
@@ -223,11 +193,9 @@ public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnC
     }
 
     //获取裁剪的图片保存地址
-    private File getmCropImageFile() {
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            LoginResult loginResult = new LoginResult();
-//            System.currentTimeMillis()
-            File file = new File(getExternalCacheDir(), LoginResult.user.getUserId() + ".jpg");
+    private File getmCropImageFile(){
+        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
+            File file = new File(getExternalCacheDir(), System.currentTimeMillis() + ".jpg");
             return file;
         }
         return null;
@@ -269,57 +237,17 @@ public class ChangeHeadPicActivity extends AppCompatActivity implements View.OnC
         return path;
     }
 
-    // getSrc
-    //
     @Override
     public void onClick(View view) {
-        // 图片保存
-        // loginresult src
-        // 图片发给服务器
-        switch (view.getId()) {
+        switch (view.getId()){
             case R.id.btn_save:
-//                LoginResult loginResult = new LoginResult();
-//                loginResult = mCropImageFile;
-                Intent intent = new Intent();
-                intent.putExtra("0", mCropImageFile);
-                setResult(0, intent);
+                Intent intent =new Intent();
+                intent.putExtra("0",mCropImageFile);
+                setResult(0,intent);
                 finish();
-                Thread t = new Thread() {
-                    @Override
-                    public void run() {
-                        if (mCropImageFile != null)
-                            Log.i("cws", mCropImageFile.toString());
-                        HashMap<String, String> params = new HashMap<>();
-                        params.put("userId", LoginResult.user.getUserId());
-                        params.put("userHeadSrc", LoginResult.user.getUserId() + ".jpg");
-                        int code = HttpUtil.post(HttpUtil.serverPath + "/user/upload", params, mCropImageFile);
-
-                        try {
-                            FormFile file = new FormFile(mCropImageFile.getName(), HttpUtil.readFileImage(mCropImageFile), "upload", "image/jpeg");
-                            HttpUtil.post(HttpUtil.serverPath + "/user/upload", params, new FormFile[]{file});
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        Message msg = handler.obtainMessage();
-                        msg.what = LOGIN_RESULT;
-                        msg.obj = code;
-                        handler.sendMessage(msg);
-//                            }
-//                        } catch (Exception e) {
-//                            // TODO Auto-generated catch block
-//                            e.printStackTrace();
-//                        }
-                    }
-                };
-                t.start();
                 break;
             default:
                 break;
         }
-    }
-
-    private void parseJASONWithGASON(String text) {
-        Gson gson = new Gson();
-        gsonerror = gson.fromJson(text, GSONError.class);
     }
 }

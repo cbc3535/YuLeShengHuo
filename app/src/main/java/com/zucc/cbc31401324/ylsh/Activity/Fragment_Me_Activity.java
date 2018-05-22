@@ -73,10 +73,10 @@ public class Fragment_Me_Activity extends Fragment implements View.OnClickListen
     @SuppressLint("ShowToast")
     private void login() {
         //TODO set头像有问题
-        if (LoginResult.user.getUserHeadSrc() != null && !LoginResult.user.getUserHeadSrc().equals("default.jpg")) {
-            Log.i("CachePath", CachePathUtil.getDiskCachePath(this.getContext()));
-            circleImageView.setImageURI(Uri.fromFile(new File(CachePathUtil.getDiskCachePath(this.getContext()) + LoginResult.user.getUserHeadSrc())));
-        }
+//        if (LoginResult.user.getUserHeadSrc() != null && !LoginResult.user.getUserHeadSrc().equals("default.jpg")) {
+//            Log.i("CachePath", CachePathUtil.getDiskCachePath(this.getContext()));
+//            circleImageView.setImageURI(Uri.fromFile(new File(CachePathUtil.getDiskCachePath(this.getContext()) + LoginResult.user.getUserHeadSrc())));
+//        }
         if (LoginResult.user.getUserName() != null) {
             user_name.setText(LoginResult.user.getUserName());
         }

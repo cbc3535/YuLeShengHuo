@@ -32,7 +32,7 @@ import java.util.UUID;
  */
 
 public class HttpUtil {
-    public static String serverIP = "106.15.230.57:8081";
+    public static String serverIP = "106.15.230.57";
     public static String serverPath = "http://" + serverIP + ":8081";
 
     public static JSONObject postMethod(List<BasicNameValuePair> parameters, String path) {
